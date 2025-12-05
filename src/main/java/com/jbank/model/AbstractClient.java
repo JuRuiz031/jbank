@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author juanfruiz
  */
-public abstract class AbstractClient implements ChangeAddress, ChangeCustomerName, ChangePhoneNumber{
+public abstract class AbstractClient {
     // Static long to keep track of next available Account ID number
     private static long nextID = 1;
 
@@ -23,9 +23,43 @@ public abstract class AbstractClient implements ChangeAddress, ChangeCustomerNam
     // Constructor
     protected AbstractClient(String phoneNumber, String address, String name) {
         this.customerID = nextID++;
+        // Input validation
+        if(phoneNumber == null || phoneNumber.length() != 10) {
+            throw new IllegalArgumentException("Phone number must be exactly 10 digits.");
+        }
+        if(address == null || address.isEmpty()) {
+            throw new IllegalArgumentException("Address cannot be null or empty.");
+        }
+        if(name == null || name.isEmpty() || name.length() < 3 || name.length() > 50) {
+            throw new IllegalArgumentException("Name must be between 3 and 50 characters.");
+        }
+
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.name = name;
+    }
+
+
+    // Mutators
+    public void updatePhoneNumber(String newNumber) {
+        if(newNumber == null || newNumber.length() != 10) {
+            throw new IllegalArgumentException("Phone number must be exactly 10 digits.");
+        }
+        this.phoneNumber = newNumber;
+    }
+
+    public void updateAddress(String newAddress) {
+        if(newAddress == null || newAddress.isEmpty()) {
+            throw new IllegalArgumentException("Address cannot be null or empty.");
+        }
+        this.address = newAddress;
+    }
+
+    public void updateName(String newName) {
+        if(newName == null || newName.isEmpty() || newName.length() < 3 || newName.length() > 50) {
+            throw new IllegalArgumentException("Name must be between 3 and 50 characters.");
+        }
+        this.name = newName;
     }
 
     // Getters
@@ -44,4 +78,5 @@ public abstract class AbstractClient implements ChangeAddress, ChangeCustomerNam
     public String getName() {
         return name;
     }
+
 }
