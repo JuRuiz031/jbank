@@ -11,6 +11,9 @@
 *.tmp
 *.temp
 
+# Target directory
+/target/
+
 # IDE specific files
 .idea/
 *.iml

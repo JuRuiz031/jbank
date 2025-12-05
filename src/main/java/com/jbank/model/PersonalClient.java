@@ -8,8 +8,9 @@ public class PersonalClient extends AbstractClient {
     private final String taxID;
     private int creditScore;
     private double yearlyIncome;
+    private double totalDebt;
 
-    public PersonalClient(String name, String address, String phoneNumber, String taxID, int creditScore, double yearlyIncome) {
+    public PersonalClient(String name, String address, String phoneNumber, String taxID, int creditScore, double yearlyIncome, double totalDebt) {
         super(phoneNumber, address, name);
 
         // Input validation
@@ -24,10 +25,15 @@ public class PersonalClient extends AbstractClient {
         if (yearlyIncome < 0) {
             throw new IllegalArgumentException("Yearly income cannot be negative.");
         }
+
+        if (totalDebt < 0) {
+            throw new IllegalArgumentException("Total debt cannot be negative.");
+        }
+
         this.taxID = taxID;
         this.creditScore = creditScore;
         this.yearlyIncome = yearlyIncome;
-
+        this.totalDebt = totalDebt;
     }
 
     // Mutators
@@ -45,6 +51,13 @@ public class PersonalClient extends AbstractClient {
         this.yearlyIncome = newIncome;
     }
 
+    public void updateTotalDebt(double newDebt) {
+        if (newDebt < 0) {
+            throw new IllegalArgumentException("Total debt cannot be negative.");
+        }
+        this.totalDebt = newDebt;
+    }
+
     // Getters
     public String getTaxID() {
         return taxID;
@@ -56,5 +69,16 @@ public class PersonalClient extends AbstractClient {
 
     public double getYearlyIncome() {
         return yearlyIncome;
+    }
+
+    public double getTotalDebt() {
+        return totalDebt;
+    }
+
+    public double getDebtToIncomeRatio() {
+        if (yearlyIncome == 0) {
+            return 0;
+        }
+        return (totalDebt / yearlyIncome) * 100;
     }
 }

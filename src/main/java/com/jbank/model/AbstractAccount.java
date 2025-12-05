@@ -40,5 +40,4 @@ public class AbstractAccount {
         return accountName;
     }
 
-
 }
