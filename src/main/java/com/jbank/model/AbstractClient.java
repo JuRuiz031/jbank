@@ -22,8 +22,10 @@ public abstract class AbstractClient {
 
     // Constructor
     protected AbstractClient(String phoneNumber, String address, String name) {
-        this.customerID = nextID++;
         // Input validation
+        if(nextID < 0) {
+            throw new IllegalArgumentException("Customer ID cannot be negative, number of customers has exceeded maximum limit.");
+        }
         if(phoneNumber == null || phoneNumber.length() != 10) {
             throw new IllegalArgumentException("Phone number must be exactly 10 digits.");
         }
@@ -34,6 +36,7 @@ public abstract class AbstractClient {
             throw new IllegalArgumentException("Name must be between 3 and 50 characters.");
         }
 
+        this.customerID = nextID++;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.name = name;
