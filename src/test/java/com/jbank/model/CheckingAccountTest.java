@@ -15,7 +15,7 @@ public class CheckingAccountTest {
 
     @BeforeEach
     public void setUp() {
-        testAccount = new CheckingAccount(1L, 1000.0, "Checking", 35.0, 0.05);
+        testAccount = new CheckingAccount(1, 1, 1000.0, "Checking", 35.0, 0.05);
     }
 
     // Overdraft fee validation

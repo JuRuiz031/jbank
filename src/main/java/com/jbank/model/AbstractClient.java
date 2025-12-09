@@ -8,11 +8,8 @@ import java.util.List;
  * @author juanfruiz
  */
 public abstract class AbstractClient {
-    // Static long to keep track of next available Account ID number
-    private static long nextID = 1;
-
     // Base variables
-    private final long customerID;
+    private int customerID;
     private String phoneNumber;
     private String address;
     private String name;
@@ -21,11 +18,8 @@ public abstract class AbstractClient {
     private List<AbstractAccount> accounts = new ArrayList<>();
 
     // Constructor
-    protected AbstractClient(String phoneNumber, String address, String name) {
+    protected AbstractClient(int customerID,String phoneNumber, String address, String name) {
         // Input validation
-        if(nextID < 0) {
-            throw new IllegalArgumentException("Customer ID cannot be negative, number of customers has exceeded maximum limit.");
-        }
         if(phoneNumber == null || phoneNumber.length() != 10) {
             throw new IllegalArgumentException("Phone number must be exactly 10 digits.");
         }
@@ -36,7 +30,7 @@ public abstract class AbstractClient {
             throw new IllegalArgumentException("Name must be between 3 and 50 characters.");
         }
 
-        this.customerID = nextID++;
+        this.customerID = customerID;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.name = name;
@@ -44,6 +38,12 @@ public abstract class AbstractClient {
 
 
     // Mutators
+    public void updateCustomerID(int newID) {
+        if(newID <= 0) {
+            throw new IllegalArgumentException("Customer ID must be positive.");
+        }
+    }
+
     public void updatePhoneNumber(String newNumber) {
         if(newNumber == null || newNumber.length() != 10) {
             throw new IllegalArgumentException("Phone number must be exactly 10 digits.");

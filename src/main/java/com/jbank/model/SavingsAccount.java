@@ -9,9 +9,9 @@ public class SavingsAccount extends AbstractAccount implements Depositable, With
     private int withdrawalLimit;
     private int withdrawalCounter;
 
-    public SavingsAccount(long customerID, double initialDeposit, String accountName,
+    public SavingsAccount(int customerID, int accountID, double initialDeposit, String accountName,
             double interestRate, int withdrawalLimit) {
-        super(customerID, initialDeposit, accountName);
+        super(customerID, accountID, initialDeposit, accountName);
         // Input validation
         if(interestRate < 0) {
             throw new IllegalArgumentException("Interest rate cannot be negative.");

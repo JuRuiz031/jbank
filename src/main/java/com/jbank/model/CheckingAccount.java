@@ -4,9 +4,9 @@ public class CheckingAccount extends AbstractAccount implements Depositable, Wit
     private double overdraftFee;
     private double overdraftLimit;
 
-    public CheckingAccount(long customerID, double initialDeposit, String accountName,
+    public CheckingAccount(int customerID, int accountID, double initialDeposit, String accountName,
             double overdraftFee, double overdraftLimit) {
-        super(customerID, initialDeposit, accountName);
+        super(customerID, accountID, initialDeposit, accountName);
         // Input validation
         if(overdraftFee < 0) {
             throw new IllegalArgumentException("Overdraft fee cannot be negative.");

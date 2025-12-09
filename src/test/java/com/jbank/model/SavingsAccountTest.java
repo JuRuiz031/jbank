@@ -15,7 +15,7 @@ public class SavingsAccountTest {
 
     @BeforeEach
     public void setUp() {
-        testAccount = new SavingsAccount(1L, 5000.0, "Savings", 1.5, 10);
+        testAccount = new SavingsAccount(1, 1, 5000.0, "Savings", 1.5, 10);
     }
 
     // Interest rate validation

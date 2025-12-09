@@ -9,9 +9,9 @@ public class CreditLine extends AbstractAccount {
     private double interestRate;
     private double minPaymentPercentage;
 
-    public CreditLine(long customerID, double initialDeposit, String accountName,
+    public CreditLine(int customerID, int accountID, double initialDeposit, String accountName,
             double creditLimit, double interestRate, double minPaymentPercentage) {
-        super(customerID, initialDeposit, accountName);
+        super(customerID, accountID, initialDeposit, accountName);
         // Input validation
         if(creditLimit < 0) {
             throw new IllegalArgumentException("Credit limit cannot be negative.");

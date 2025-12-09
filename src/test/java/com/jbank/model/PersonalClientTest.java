@@ -15,7 +15,7 @@ public class PersonalClientTest {
 
     @BeforeEach
     public void setUp() {
-        testClient = new PersonalClient("John", "123 Main", "1234567890", 
+        testClient = new PersonalClient(1, "John", "123 Main", "1234567890", 
             "123456789", 700, 50000, 15000);
     }
 
@@ -23,7 +23,7 @@ public class PersonalClientTest {
     @Test
     public void testInvalidTaxIDNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new PersonalClient("John", "123 Main", "1234567890", null, 700, 50000, 15000)
+            new PersonalClient(1, "John", "123 Main", "1234567890", null, 700, 50000, 15000)
         );
         assertEquals("Tax ID must be exactly 9 characters.", exception.getMessage());
     }
@@ -31,7 +31,7 @@ public class PersonalClientTest {
     @Test
     public void testInvalidTaxIDTooShort() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new PersonalClient("John", "123 Main", "1234567890", "12345", 700, 50000, 15000)
+            new PersonalClient(1, "John", "123 Main", "1234567890", "12345", 700, 50000, 15000)
         );
         assertEquals("Tax ID must be exactly 9 characters.", exception.getMessage());
     }
@@ -39,7 +39,7 @@ public class PersonalClientTest {
     @Test
     public void testInvalidTaxIDTooLong() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new PersonalClient("John", "123 Main", "1234567890", "1234567890", 700, 50000, 15000)
+            new PersonalClient(1, "John", "123 Main", "1234567890", "1234567890", 700, 50000, 15000)
         );
         assertEquals("Tax ID must be exactly 9 characters.", exception.getMessage());
     }
@@ -48,7 +48,7 @@ public class PersonalClientTest {
     @Test
     public void testInvalidCreditScoreTooLow() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new PersonalClient("John", "123 Main", "1234567890", "123456789", 299, 50000, 15000)
+            new PersonalClient(1, "John", "123 Main", "1234567890", "123456789", 299, 50000, 15000)
         );
         assertEquals("Credit score must be between 300 and 850.", exception.getMessage());
     }
@@ -56,7 +56,7 @@ public class PersonalClientTest {
     @Test
     public void testInvalidCreditScoreTooHigh() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new PersonalClient("John", "123 Main", "1234567890", "123456789", 851, 50000, 15000)
+            new PersonalClient(1, "John", "123 Main", "1234567890", "123456789", 851, 50000, 15000)
         );
         assertEquals("Credit score must be between 300 and 850.", exception.getMessage());
     }
@@ -65,7 +65,7 @@ public class PersonalClientTest {
     @Test
     public void testInvalidYearlyIncomeNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new PersonalClient("John", "123 Main", "1234567890", "123456789", 700, -1000, 15000)
+            new PersonalClient(1, "John", "123 Main", "1234567890", "123456789", 700, -1000, 15000)
         );
         assertEquals("Yearly income cannot be negative.", exception.getMessage());
     }
@@ -74,7 +74,7 @@ public class PersonalClientTest {
     @Test
     public void testInvalidTotalDebtNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new PersonalClient("John", "123 Main", "1234567890", "123456789", 700, 50000, -5000)
+            new PersonalClient(1, "John", "123 Main", "1234567890", "123456789", 700, 50000, -5000)
         );
         assertEquals("Total debt cannot be negative.", exception.getMessage());
     }
@@ -122,7 +122,7 @@ public class PersonalClientTest {
 
     @Test
     public void testDebtToIncomeRatioWithZeroIncome() {
-        PersonalClient client = new PersonalClient("John", "123 Main", "1234567890", 
+        PersonalClient client = new PersonalClient(1, "John", "123 Main", "1234567890", 
             "123456789", 700, 0, 15000);
         assertEquals(0.0, client.getDebtToIncomeRatio(), 0.01);
     }

@@ -10,8 +10,8 @@ public class PersonalClient extends AbstractClient {
     private double yearlyIncome;
     private double totalDebt;
 
-    public PersonalClient(String name, String address, String phoneNumber, String taxID, int creditScore, double yearlyIncome, double totalDebt) {
-        super(phoneNumber, address, name);
+    public PersonalClient(int customerID, String name, String address, String phoneNumber, String taxID, int creditScore, double yearlyIncome, double totalDebt) {
+        super(customerID, phoneNumber, address, name);
 
         // Input validation
         if(taxID == null || taxID.isEmpty() || taxID.length() != 9) {

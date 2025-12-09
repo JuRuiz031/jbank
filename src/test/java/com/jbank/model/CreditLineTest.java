@@ -15,7 +15,7 @@ public class CreditLineTest {
 
     @BeforeEach
     public void setUp() {
-        testAccount = new CreditLine(1, 0, "Credit Line", 5000, 18.0, 2.0);
+        testAccount = new CreditLine(1, 1, 0, "Credit Line", 5000, 18.0, 2.0);
     }
 
     // Credit limit validation

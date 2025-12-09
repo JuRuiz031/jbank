@@ -15,7 +15,7 @@ public class BusinessClientTest {
 
     @BeforeEach
     public void setUp() {
-        testClient = new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+        testClient = new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
             "123456789", "LLC", "John Smith", "CEO", "john@techcorp.com", 
             500000, 1000000, 150000);
     }
@@ -24,7 +24,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidEINNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 null, "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -34,7 +34,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidEINEmpty() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -44,7 +44,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidEINTooShort() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "12345", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -54,7 +54,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidEINTooLong() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "1234567890", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -65,7 +65,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidBusinessTypeNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", null, "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -75,7 +75,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidBusinessTypeInvalid() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "InvalidType", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -86,7 +86,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidContactNameNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", null, "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -96,7 +96,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidContactNameEmpty() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -106,7 +106,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidContactNameTooShort() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "Jo", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -116,7 +116,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidContactNameTooLong() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "a".repeat(51), "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -127,7 +127,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidContactTitleNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", null, "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -137,7 +137,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidContactTitleInvalid() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "InvalidTitle", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
@@ -148,7 +148,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidContactEmailNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", null, 
                 500000, 1000000, 150000)
         );
@@ -158,7 +158,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidContactEmailNoAtSign() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", "invalidemail.com", 
                 500000, 1000000, 150000)
         );
@@ -169,7 +169,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidFinancialNegativeTotalAsset() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 -500000, 1000000, 150000)
         );
@@ -179,7 +179,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidFinancialNegativeRevenue() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, -1000000, 150000)
         );
@@ -189,7 +189,7 @@ public class BusinessClientTest {
     @Test
     public void testInvalidFinancialNegativeProfit() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+            new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, -150000)
         );
@@ -305,7 +305,7 @@ public class BusinessClientTest {
 
     @Test
     public void testAnnualProfitMarginWithZeroRevenue() {
-        BusinessClient client = new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+        BusinessClient client = new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
             "123456789", "LLC", "John Smith", "CEO", "john@techcorp.com", 
             500000, 0, 0);
         assertEquals(0.0, client.getAnnualProfitMargin(), 0.01);
@@ -319,7 +319,7 @@ public class BusinessClientTest {
 
     @Test
     public void testReturnOnAssetsWithZeroAssets() {
-        BusinessClient client = new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
+        BusinessClient client = new BusinessClient(1, "Tech Corp", "123 Business Ave", "5551234567", 
             "123456789", "LLC", "John Smith", "CEO", "john@techcorp.com", 
             0, 1000000, 150000);
         assertEquals(0.0, client.getReturnOnAssets(), 0.01);

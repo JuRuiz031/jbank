@@ -32,10 +32,10 @@ public class BusinessClient extends AbstractClient {
     private double annualProfit;
 
     // Constructor
-    public BusinessClient(String name, String address, String phoneNumber, String ein, String businessType,
+    public BusinessClient(int customerID, String name, String address, String phoneNumber, String ein, String businessType,
                           String contactName, String contactTitle, String contactEmail,
                           double totalAssetValue, double annualRevenue, double annualProfit) {
-        super(phoneNumber, address, name);
+        super(customerID, phoneNumber, address, name);
 
         // Input validation
         if(ein == null || ein.isEmpty() || ein.length() != 9) {
