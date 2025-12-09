@@ -23,249 +23,278 @@ public class BusinessClientTest {
     // EIN validation
     @Test
     public void testInvalidEINNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 null, "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("EIN must be exactly 9 characters.", exception.getMessage());
     }
 
     @Test
     public void testInvalidEINEmpty() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("EIN must be exactly 9 characters.", exception.getMessage());
     }
 
     @Test
     public void testInvalidEINTooShort() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "12345", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("EIN must be exactly 9 characters.", exception.getMessage());
     }
 
     @Test
     public void testInvalidEINTooLong() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "1234567890", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("EIN must be exactly 9 characters.", exception.getMessage());
     }
 
     // Business type validation
     @Test
     public void testInvalidBusinessTypeNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", null, "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("Invalid business type.", exception.getMessage());
     }
 
     @Test
     public void testInvalidBusinessTypeInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "InvalidType", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("Invalid business type.", exception.getMessage());
     }
 
     // Contact name validation
     @Test
     public void testInvalidContactNameNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", null, "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("Contact name must be between 3 and 50 characters.", exception.getMessage());
     }
 
     @Test
     public void testInvalidContactNameEmpty() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("Contact name must be between 3 and 50 characters.", exception.getMessage());
     }
 
     @Test
     public void testInvalidContactNameTooShort() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "Jo", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("Contact name must be between 3 and 50 characters.", exception.getMessage());
     }
 
     @Test
     public void testInvalidContactNameTooLong() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "a".repeat(51), "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("Contact name must be between 3 and 50 characters.", exception.getMessage());
     }
 
     // Contact title validation
     @Test
     public void testInvalidContactTitleNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", null, "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("Invalid contact title.", exception.getMessage());
     }
 
     @Test
     public void testInvalidContactTitleInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "InvalidTitle", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("Invalid contact title.", exception.getMessage());
     }
 
     // Contact email validation
     @Test
     public void testInvalidContactEmailNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", null, 
                 500000, 1000000, 150000)
         );
+        assertEquals("Invalid contact email.", exception.getMessage());
     }
 
     @Test
     public void testInvalidContactEmailNoAtSign() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", "invalidemail.com", 
                 500000, 1000000, 150000)
         );
+        assertEquals("Invalid contact email.", exception.getMessage());
     }
 
     // Financial values validation
     @Test
     public void testInvalidFinancialNegativeTotalAsset() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 -500000, 1000000, 150000)
         );
+        assertEquals("Financial values cannot be negative.", exception.getMessage());
     }
 
     @Test
     public void testInvalidFinancialNegativeRevenue() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, -1000000, 150000)
         );
+        assertEquals("Financial values cannot be negative.", exception.getMessage());
     }
 
     @Test
     public void testInvalidFinancialNegativeProfit() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new BusinessClient("Tech Corp", "123 Business Ave", "5551234567", 
                 "123456789", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, -150000)
         );
+        assertEquals("Financial values cannot be negative.", exception.getMessage());
     }
 
     // Business type mutator validation
     @Test
     public void testUpdateBusinessTypeInvalidNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateBusinessType(null)
         );
+        assertEquals("Invalid business type.", exception.getMessage());
     }
 
     @Test
     public void testUpdateBusinessTypeInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateBusinessType("InvalidType")
         );
+        assertEquals("Invalid business type.", exception.getMessage());
     }
 
     // Contact name mutator validation
     @Test
     public void testUpdateContactNameInvalidNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateContactName(null)
         );
+        assertEquals("Contact name must be between 3 and 50 characters.", exception.getMessage());
     }
 
     @Test
     public void testUpdateContactNameInvalidTooShort() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateContactName("Jo")
         );
+        assertEquals("Contact name must be between 3 and 50 characters.", exception.getMessage());
     }
 
     @Test
     public void testUpdateContactNameInvalidTooLong() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateContactName("a".repeat(51))
         );
+        assertEquals("Contact name must be between 3 and 50 characters.", exception.getMessage());
     }
 
     // Contact title mutator validation
     @Test
     public void testUpdateContactTitleInvalidNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateContactTitle(null)
         );
+        assertEquals("Invalid contact title.", exception.getMessage());
     }
 
     @Test
     public void testUpdateContactTitleInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateContactTitle("InvalidTitle")
         );
+        assertEquals("Invalid contact title.", exception.getMessage());
     }
 
     // Contact email mutator validation
     @Test
     public void testUpdateContactEmailInvalidNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateContactEmail(null)
         );
+        assertEquals("Invalid contact email.", exception.getMessage());
     }
 
     @Test
     public void testUpdateContactEmailInvalidNoAtSign() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateContactEmail("invalidemail.com")
         );
+        assertEquals("Invalid contact email.", exception.getMessage());
     }
 
     // Financial mutator validation
     @Test
     public void testUpdateFinancialsInvalidNegativeTotalAsset() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateFinancials(-500000, 1000000, 150000)
         );
+        assertEquals("Financial values cannot be negative.", exception.getMessage());
     }
 
     @Test
     public void testUpdateFinancialsInvalidNegativeRevenue() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateFinancials(500000, -1000000, 150000)
         );
+        assertEquals("Financial values cannot be negative.", exception.getMessage());
     }
 
     @Test
     public void testUpdateFinancialsInvalidNegativeProfit() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateFinancials(500000, 1000000, -150000)
         );
+        assertEquals("Financial values cannot be negative.", exception.getMessage());
     }
 
     // Business logic - Annual profit margin

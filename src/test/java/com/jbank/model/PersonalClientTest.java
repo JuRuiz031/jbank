@@ -22,85 +22,96 @@ public class PersonalClientTest {
     // Tax ID validation
     @Test
     public void testInvalidTaxIDNull() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new PersonalClient("John", "123 Main", "1234567890", null, 700, 50000, 15000)
         );
+        assertEquals("Tax ID must be exactly 9 characters.", exception.getMessage());
     }
 
     @Test
     public void testInvalidTaxIDTooShort() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new PersonalClient("John", "123 Main", "1234567890", "12345", 700, 50000, 15000)
         );
+        assertEquals("Tax ID must be exactly 9 characters.", exception.getMessage());
     }
 
     @Test
     public void testInvalidTaxIDTooLong() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new PersonalClient("John", "123 Main", "1234567890", "1234567890", 700, 50000, 15000)
         );
+        assertEquals("Tax ID must be exactly 9 characters.", exception.getMessage());
     }
 
     // Credit score validation
     @Test
     public void testInvalidCreditScoreTooLow() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new PersonalClient("John", "123 Main", "1234567890", "123456789", 299, 50000, 15000)
         );
+        assertEquals("Credit score must be between 300 and 850.", exception.getMessage());
     }
 
     @Test
     public void testInvalidCreditScoreTooHigh() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new PersonalClient("John", "123 Main", "1234567890", "123456789", 851, 50000, 15000)
         );
+        assertEquals("Credit score must be between 300 and 850.", exception.getMessage());
     }
 
     // Yearly income validation
     @Test
     public void testInvalidYearlyIncomeNegative() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new PersonalClient("John", "123 Main", "1234567890", "123456789", 700, -1000, 15000)
         );
+        assertEquals("Yearly income cannot be negative.", exception.getMessage());
     }
 
     // Total debt validation
     @Test
     public void testInvalidTotalDebtNegative() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new PersonalClient("John", "123 Main", "1234567890", "123456789", 700, 50000, -5000)
         );
+        assertEquals("Total debt cannot be negative.", exception.getMessage());
     }
 
     // Credit score mutator validation
     @Test
     public void testUpdateCreditScoreInvalidTooLow() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateCreditScore(250)
         );
+        assertEquals("Credit score must be between 300 and 850.", exception.getMessage());
     }
 
     @Test
     public void testUpdateCreditScoreInvalidTooHigh() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateCreditScore(900)
         );
+        assertEquals("Credit score must be between 300 and 850.", exception.getMessage());
     }
 
     // Yearly income mutator validation
     @Test
     public void testUpdateYearlyIncomeInvalidNegative() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateYearlyIncome(-10000)
         );
+        assertEquals("Yearly income cannot be negative.", exception.getMessage());
     }
 
     // Total debt mutator validation
     @Test
     public void testUpdateTotalDebtInvalidNegative() {
-        assertThrows(IllegalArgumentException.class, () -> 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testClient.updateTotalDebt(-5000)
         );
+        assertEquals("Total debt cannot be negative.", exception.getMessage());
     }
 
     // Business logic - Debt to income ratio

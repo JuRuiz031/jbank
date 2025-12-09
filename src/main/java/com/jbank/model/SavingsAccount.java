@@ -58,7 +58,7 @@ public class SavingsAccount extends AbstractAccount implements Depositable, With
     public void resetWithdrawalCounter() {
         this.withdrawalCounter = 0;
     }
-    public void setInterestRate(double interestRate) {
+    public void updateInterestRate(double interestRate) {
         if(interestRate < 0) {
             throw new IllegalArgumentException("Interest rate cannot be negative.");
         }
@@ -69,6 +69,11 @@ public class SavingsAccount extends AbstractAccount implements Depositable, With
             throw new IllegalArgumentException("Withdrawal limit cannot be negative.");
         }
         this.withdrawalLimit = withdrawalLimit;
+    }
+
+    public void applyInterest() {
+        double newBalance = this.getBalance() + (this.getBalance() * (interestRate / 100));
+        this.updateBalance(newBalance);
     }
 
 

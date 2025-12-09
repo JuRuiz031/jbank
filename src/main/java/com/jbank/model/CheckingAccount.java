@@ -48,7 +48,7 @@ public class CheckingAccount extends AbstractAccount implements Depositable, Wit
     }
 
     // Setter
-    public void setOverdraftFee(double overdraftFee) {
+    public void updateOverdraftFee(double overdraftFee) {
         if(overdraftFee < 0) {
             throw new IllegalArgumentException("Overdraft fee cannot be negative.");
         }
