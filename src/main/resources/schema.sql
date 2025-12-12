@@ -67,7 +67,7 @@ CREATE TABLE credit_lines (
     FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE
 );
 
--- Junction table for many-to-many relationship (supports joint accounts)
+-- Junction table for many-to-many relationship (could support joint accounts in future iterations)
 CREATE TABLE client_accounts (
     customer_id INT NOT NULL,
     account_id INT NOT NULL,
@@ -77,10 +77,10 @@ CREATE TABLE client_accounts (
     FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE
 );
 
--- Indexes for common queries
-CREATE INDEX idx_clients_type ON clients(client_type);
-CREATE INDEX idx_personal_tax_id ON personal_clients(tax_id);
-CREATE INDEX idx_business_ein ON business_clients(ein);
-CREATE INDEX idx_accounts_type ON accounts(account_type);
-CREATE INDEX idx_client_accounts_customer ON client_accounts(customer_id);
-CREATE INDEX idx_client_accounts_account ON client_accounts(account_id);
+-- Possible future indexes for better performance? (Not needed for this scale but good to know)
+-- CREATE INDEX idx_clients_type ON clients(client_type);
+-- CREATE INDEX idx_personal_tax_id ON personal_clients(tax_id);
+-- CREATE INDEX idx_business_ein ON business_clients(ein);
+-- CREATE INDEX idx_accounts_type ON accounts(account_type);
+-- CREATE INDEX idx_client_accounts_customer ON client_accounts(customer_id);
+-- CREATE INDEX idx_client_accounts_account ON client_accounts(account_id);
