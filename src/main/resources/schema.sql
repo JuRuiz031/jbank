@@ -1,6 +1,5 @@
 
--- Schema for JBank, a simple CLI banking application
--- 3NF compliant design with support for joint accounts
+-- Schema for JBank Database
 
 -- Base clients table (common fields for all client types)
 CREATE TABLE clients (
