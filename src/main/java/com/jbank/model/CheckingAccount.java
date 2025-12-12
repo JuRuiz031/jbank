@@ -64,4 +64,15 @@ public class CheckingAccount extends AbstractAccount implements Depositable, Wit
         return overdraftFee;
     }
 
+    @Override
+    public String toString() {
+        return "CheckingAccount{" +
+                "accountID=" + getAccountID() +
+                ", customerID=" + getCustomerID() +
+                ", accountName='" + getAccountName() + '\'' +
+                ", overdraftFee=" + overdraftFee +
+                ", overdraftLimit=" + overdraftLimit +
+                '}';
+    }
+
 }

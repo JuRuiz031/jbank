@@ -90,4 +90,16 @@ public class SavingsAccount extends AbstractAccount implements Depositable, With
         return withdrawalCounter;
     }
 
+    @Override
+    public String toString() {
+        return "SavingsAccount{" +
+                "accountID=" + getAccountID() +
+                ", customerID=" + getCustomerID() +
+                ", accountName='" + getAccountName() + '\'' +
+                ", interestRate=" + interestRate +
+                ", withdrawalLimit=" + withdrawalLimit +
+                ", withdrawalCounter=" + withdrawalCounter +
+                '}';
+    }
+
 }

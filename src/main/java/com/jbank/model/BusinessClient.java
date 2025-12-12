@@ -149,4 +149,38 @@ public class BusinessClient extends AbstractClient {
         }
         return (annualProfit / totalAssetValue) * 100;
     }
+
+    @Override
+    public String toString() {
+        String maskedEin = (ein == null || ein.length() < 4)
+                ? "****"
+                : "**-" + ein.substring(ein.length() - 4);
+        return "BusinessClient{" +
+                "customerID=" + getCustomerID() +
+                ", name='" + getName() + '\'' +
+                ", businessType='" + businessType + '\'' +
+                ", ein='" + maskedEin + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BusinessClient that = (BusinessClient) o;
+        long thisId = getCustomerID();
+        long thatId = that.getCustomerID();
+        if (thisId > 0 && thatId > 0) {
+            return thisId == thatId;
+        }
+        return java.util.Objects.equals(this.ein, that.ein);
+    }
+
+    @Override
+    public int hashCode() {
+        long id = getCustomerID();
+        return (id > 0)
+                ? java.util.Objects.hash(id)
+                : java.util.Objects.hash(ein);
+    }
 }

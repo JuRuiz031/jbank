@@ -69,4 +69,16 @@ public class CreditLine extends AbstractAccount {
     public double getMinPaymentPercentage() {
         return minPaymentPercentage * 100;
     }
+
+    @Override
+    public String toString() {
+        return "CreditLine{" +
+                "accountID=" + getAccountID() +
+                ", customerID=" + getCustomerID() +
+                ", accountName='" + getAccountName() + '\'' +
+                ", creditLimit=" + creditLimit +
+                ", interestRate=" + interestRate +
+                ", minPaymentPercentage=" + getMinPaymentPercentage() +
+                '}';
+    }
 }

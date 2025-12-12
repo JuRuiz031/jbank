@@ -81,4 +81,38 @@ public class PersonalClient extends AbstractClient {
         }
         return (totalDebt / yearlyIncome) * 100;
     }
+
+    @Override
+    public String toString() {
+        String maskedTax = (taxID == null || taxID.length() < 4)
+                ? "****"
+                : "***-**-" + taxID.substring(taxID.length() - 4);
+        return "PersonalClient{" +
+                "customerID=" + getCustomerID() +
+                ", name='" + getName() + '\'' +
+                ", taxID='" + maskedTax + '\'' +
+                ", creditScore=" + creditScore +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonalClient that = (PersonalClient) o;
+        long thisId = getCustomerID();
+        long thatId = that.getCustomerID();
+        if (thisId > 0 && thatId > 0) {
+            return thisId == thatId;
+        }
+        return java.util.Objects.equals(this.taxID, that.taxID);
+    }
+
+    @Override
+    public int hashCode() {
+        long id = getCustomerID();
+        return (id > 0)
+                ? java.util.Objects.hash(id)
+                : java.util.Objects.hash(taxID);
+    }
 }

@@ -58,4 +58,26 @@ public class AbstractAccount {
         return accountName;
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountID=" + accountID +
+                ", customerID=" + customerID +
+                ", accountName='" + accountName + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractAccount that = (AbstractAccount) o;
+        // Use only database identity for accounts
+        return this.accountID > 0 && this.accountID == that.accountID;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(accountID);
+    }
 }
