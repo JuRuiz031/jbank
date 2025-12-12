@@ -5,7 +5,7 @@ import java.util.Set;
 
 /**
  *
- * @author juanf
+ * @author juanfruiz
  */
 public class BusinessClient extends AbstractClient {
     // Valid business types

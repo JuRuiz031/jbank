@@ -3,7 +3,7 @@ package com.jbank.model;
 
 /**
  *
- * @author juanf
+ * @author juanfruiz
  */
 public interface Depositable {
     void deposit(double amount);

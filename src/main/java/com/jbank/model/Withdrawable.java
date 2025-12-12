@@ -2,7 +2,7 @@ package com.jbank.model;
 
 /**
  *
- * @author juanf
+ * @author juanfruiz
  */
 public interface Withdrawable {
     void withdraw(double amount);

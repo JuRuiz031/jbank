@@ -2,7 +2,7 @@ package com.jbank.model;
 
 /**
  *
- * @author juanf
+ * @author juanfruiz
  */
 public class PersonalClient extends AbstractClient {
     private final String taxID;

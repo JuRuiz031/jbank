@@ -1,5 +1,9 @@
 package com.jbank.model;
 
+/**
+ *
+ * @author juanfruiz
+ */
 public class CheckingAccount extends AbstractAccount implements Depositable, Withdrawable {
     private double overdraftFee;
     private double overdraftLimit;
