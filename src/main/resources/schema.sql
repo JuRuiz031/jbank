@@ -3,7 +3,7 @@
 
 -- Base clients table (common fields for all client types)
 CREATE TABLE clients (
-    customer_id INT PRIMARY KEY,
+    customer_id SERIAL PRIMARY KEY,
     client_type VARCHAR(10) NOT NULL CHECK (client_type IN ('PERSONAL', 'BUSINESS')),
     phone_number VARCHAR(10) NOT NULL,
     address VARCHAR(255) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE business_clients (
 
 -- Base accounts table (common fields for all account types)
 CREATE TABLE accounts (
-    account_id INT PRIMARY KEY,
+    account_id SERIAL PRIMARY KEY,
     account_type VARCHAR(20) NOT NULL CHECK (account_type IN ('CHECKING', 'SAVINGS', 'CREDIT_LINE')),
     account_name VARCHAR(30) NOT NULL,
     balance DECIMAL(12, 2) NOT NULL
