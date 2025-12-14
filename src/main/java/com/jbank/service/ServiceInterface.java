@@ -14,7 +14,7 @@ public interface ServiceInterface<T,U> {
     List<T> getAllEntities();
     T updateEntity(Integer id, T newEntity);
 
-    // Conversion methods
+    // Conversion methods and tools
     Optional<U> convertEntityToModel(T entity);
     Optional<T> convertModelToEntity(U model);
     Optional<U> getModelById(Integer id);

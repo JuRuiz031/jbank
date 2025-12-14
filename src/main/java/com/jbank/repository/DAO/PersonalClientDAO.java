@@ -17,7 +17,7 @@ import com.jbank.util.ConnectionHandler;
  *
  * @author juanf
  */
-public class PesronalClientDAO implements DAOinterface<PersonalClientEntity> {
+public class PersonalClientDAO implements DAOinterface<PersonalClientEntity> {
 
     private final Connection connection = ConnectionHandler.getConnection();
 
