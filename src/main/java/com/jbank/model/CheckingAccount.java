@@ -32,7 +32,7 @@ public class CheckingAccount extends AbstractAccount implements Depositable, Wit
             throw new IllegalArgumentException("Deposit amount must be positive.");
         }
         double newBalance = this.getBalance() + depositAmount;
-        this.updateBalance(newBalance);
+        this.setBalance(newBalance);
     }
 
     @Override
@@ -48,11 +48,11 @@ public class CheckingAccount extends AbstractAccount implements Depositable, Wit
                 newBalance -= overdraftFee;
             }
         }
-        this.updateBalance(newBalance);
+        this.setBalance(newBalance);
     }
 
     // Setter
-    public void updateOverdraftFee(double overdraftFee) {
+    public void setOverdraftFee(double overdraftFee) {
         if(overdraftFee < 0) {
             throw new IllegalArgumentException("Overdraft fee cannot be negative.");
         }

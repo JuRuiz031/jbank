@@ -29,15 +29,15 @@ public class AbstractAccount {
         this.accountName = accountName;
     }
 
-    // Mutator
-    public void updateAccountID(int newID) {
+    // Setter
+    public void setAccountID(int newID) {
         if(newID <= 0) {
             throw new IllegalArgumentException("Account ID must be positive.");
         }
         this.accountID = newID;
     }
-    // Protected Mutator for balance to be used by subclasses
-    protected void updateBalance(double newBalance) {
+    // Protected setter for balance to be used by subclasses
+    protected void setBalance(double newBalance) {
         this.balance = newBalance;
     }
 

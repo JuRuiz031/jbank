@@ -83,7 +83,7 @@ public class PersonalClientTest {
     @Test
     public void testUpdateCreditScoreInvalidTooLow() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testClient.updateCreditScore(250)
+            testClient.setCreditScore(250)
         );
         assertEquals("Credit score must be between 300 and 850.", exception.getMessage());
     }
@@ -91,7 +91,7 @@ public class PersonalClientTest {
     @Test
     public void testUpdateCreditScoreInvalidTooHigh() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testClient.updateCreditScore(900)
+            testClient.setCreditScore(900)
         );
         assertEquals("Credit score must be between 300 and 850.", exception.getMessage());
     }
@@ -100,7 +100,7 @@ public class PersonalClientTest {
     @Test
     public void testUpdateYearlyIncomeInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testClient.updateYearlyIncome(-10000)
+            testClient.setYearlyIncome(-10000)
         );
         assertEquals("Yearly income cannot be negative.", exception.getMessage());
     }
@@ -109,7 +109,7 @@ public class PersonalClientTest {
     @Test
     public void testUpdateTotalDebtInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testClient.updateTotalDebt(-5000)
+            testClient.setTotalDebt(-5000)
         );
         assertEquals("Total debt cannot be negative.", exception.getMessage());
     }

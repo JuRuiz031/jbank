@@ -36,22 +36,22 @@ public class PersonalClient extends AbstractClient {
         this.totalDebt = totalDebt;
     }
 
-    // Mutators
-    public void updateCreditScore(int newScore) {
+    // Setters
+    public void setCreditScore(int newScore) {
         if (newScore < 300 || newScore > 850) {
             throw new IllegalArgumentException("Credit score must be between 300 and 850.");
         }
         this.creditScore = newScore;
     }
 
-    public void updateYearlyIncome(double newIncome) {
+    public void setYearlyIncome(double newIncome) {
         if (newIncome < 0) {
             throw new IllegalArgumentException("Yearly income cannot be negative.");
         }
         this.yearlyIncome = newIncome;
     }
 
-    public void updateTotalDebt(double newDebt) {
+    public void setTotalDebt(double newDebt) {
         if (newDebt < 0) {
             throw new IllegalArgumentException("Total debt cannot be negative.");
         }

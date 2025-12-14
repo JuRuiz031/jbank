@@ -29,19 +29,19 @@ public class CreditLine extends AbstractAccount {
     }
 
     // Mutators
-    public void updateCreditLimit(double creditLimit) {
+    public void setCreditLimit(double creditLimit) {
         if(creditLimit < 0) {
             throw new IllegalArgumentException("Credit limit cannot be negative.");
         }
         this.creditLimit = creditLimit;
     }
-    public void updateInterestRate(double interestRate) {
+    public void setInterestRate(double interestRate) {
         if(interestRate < 0) {
             throw new IllegalArgumentException("Interest rate cannot be negative.");
         }
         this.interestRate = interestRate;
     }
-    public void updateMinPaymentPercentage(double minPaymentPercentage) {
+    public void setMinPaymentPercentage(double minPaymentPercentage) {
         if(minPaymentPercentage < 0 || minPaymentPercentage > 100) {
             throw new IllegalArgumentException("Minimum payment percentage must be between 0 and 100.");
         }
@@ -55,7 +55,7 @@ public class CreditLine extends AbstractAccount {
         if (newBalance < -creditLimit) {
             throw new IllegalArgumentException("Payment would exceed credit limit. Would you like to pay off the full balance?");
         }
-        this.updateBalance(newBalance);
+        this.setBalance(newBalance);
     }
 
 

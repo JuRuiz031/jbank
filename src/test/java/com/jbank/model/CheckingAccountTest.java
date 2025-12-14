@@ -21,14 +21,14 @@ public class CheckingAccountTest {
     // Overdraft fee validation
     @Test
     public void testUpdateOverdraftFeeValid() {
-        testAccount.updateOverdraftFee(35);
+        testAccount.setOverdraftFee(35);
         assertEquals(35, testAccount.getOverdraftFee(), 0.01);
     }
 
     @Test
     public void testUpdateOverdraftFeeInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.updateOverdraftFee(-10)
+            testAccount.setOverdraftFee(-10)
         );
         assertEquals("Overdraft fee cannot be negative.", exception.getMessage());
     }

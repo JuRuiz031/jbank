@@ -21,14 +21,14 @@ public class SavingsAccountTest {
     // Interest rate validation
     @Test
     public void testUpdateInterestRateValid() {
-        testAccount.updateInterestRate(2.5);
+        testAccount.setInterestRate(2.5);
         assertEquals(2.5, testAccount.getInterestRate(), 0.01);
     }
 
     @Test
     public void testUpdateInterestRateInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.updateInterestRate(-1)
+            testAccount.setInterestRate(-1)
         );
         assertEquals("Interest rate cannot be negative.", exception.getMessage());
     }
@@ -90,14 +90,14 @@ public class SavingsAccountTest {
     // Apply interest business logic
     @Test
     public void testApplyInterestValid() {
-        testAccount.updateInterestRate(1.0);
+        testAccount.setInterestRate(1.0);
         testAccount.applyInterest();
         assertEquals(5050, testAccount.getBalance(), 0.01);
     }
 
     @Test
     public void testApplyInterestWithZeroRate() {
-        testAccount.updateInterestRate(0);
+        testAccount.setInterestRate(0);
         testAccount.applyInterest();
         assertEquals(5000, testAccount.getBalance(), 0.01);
     }

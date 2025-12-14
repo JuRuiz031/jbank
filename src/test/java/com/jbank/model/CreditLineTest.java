@@ -21,14 +21,14 @@ public class CreditLineTest {
     // Credit limit validation
     @Test
     public void testUpdateCreditLimitValid() {
-        testAccount.updateCreditLimit(10000);
+        testAccount.setCreditLimit(10000);
         assertEquals(10000, testAccount.getCreditLimit(), 0.01);
     }
 
     @Test
     public void testUpdateCreditLimitInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.updateCreditLimit(-1000)
+            testAccount.setCreditLimit(-1000)
         );
         assertEquals("Credit limit cannot be negative.", exception.getMessage());
     }
@@ -36,14 +36,14 @@ public class CreditLineTest {
     // Interest rate validation
     @Test
     public void testUpdateInterestRateValid() {
-        testAccount.updateInterestRate(19.5);
+        testAccount.setInterestRate(19.5);
         assertEquals(19.5, testAccount.getInterestRate(), 0.01);
     }
 
     @Test
     public void testUpdateInterestRateInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.updateInterestRate(-5)
+            testAccount.setInterestRate(-5)
         );
         assertEquals("Interest rate cannot be negative.", exception.getMessage());
     }
@@ -51,14 +51,14 @@ public class CreditLineTest {
     // Minimum payment percentage validation
     @Test
     public void testUpdateMinPaymentPercentageValid() {
-        testAccount.updateMinPaymentPercentage(5.0);
+        testAccount.setMinPaymentPercentage(5.0);
         assertEquals(5.0, testAccount.getMinPaymentPercentage(), 0.01);
     }
 
     @Test
     public void testUpdateMinPaymentPercentageInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.updateMinPaymentPercentage(-1)
+            testAccount.setMinPaymentPercentage(-1)
         );
         assertEquals("Minimum payment percentage must be between 0 and 100.", exception.getMessage());
     }
@@ -66,7 +66,7 @@ public class CreditLineTest {
     @Test
     public void testUpdateMinPaymentPercentageInvalidTooHigh() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.updateMinPaymentPercentage(101)
+            testAccount.setMinPaymentPercentage(101)
         );
         assertEquals("Minimum payment percentage must be between 0 and 100.", exception.getMessage());
     }
