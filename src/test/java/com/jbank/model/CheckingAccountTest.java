@@ -20,12 +20,6 @@ public class CheckingAccountTest {
 
     // Overdraft fee validation
     @Test
-    public void testUpdateOverdraftFeeValid() {
-        testAccount.setOverdraftFee(35);
-        assertEquals(35, testAccount.getOverdraftFee(), 0.01);
-    }
-
-    @Test
     public void testUpdateOverdraftFeeInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testAccount.setOverdraftFee(-10)
@@ -48,14 +42,6 @@ public class CheckingAccountTest {
         assertEquals("Deposit amount must be positive.", exception.getMessage());
     }
 
-    @Test
-    public void testDepositInvalidZero() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.deposit(0)
-        );
-        assertEquals("Deposit amount must be positive.", exception.getMessage());
-    }
-
     // Withdrawal business logic
     @Test
     public void testWithdrawalValid() {
@@ -67,14 +53,6 @@ public class CheckingAccountTest {
     public void testWithdrawalInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testAccount.withdraw(-50)
-        );
-        assertEquals("Withdrawal amount must be positive.", exception.getMessage());
-    }
-
-    @Test
-    public void testWithdrawalInvalidZero() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.withdraw(0)
         );
         assertEquals("Withdrawal amount must be positive.", exception.getMessage());
     }

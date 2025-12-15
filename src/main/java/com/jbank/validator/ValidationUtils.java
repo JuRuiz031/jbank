@@ -1,44 +1,38 @@
 package com.jbank.validator;
-
 /**
- * Utility class for primitive field validations.
- * Contains static methods for common validation patterns.
+ *
+ * @author juanf
  */
+
+// Utility class for common validation methods.
 public class ValidationUtils {
     
     private ValidationUtils() {
         // Prevent instantiation
     }
     
-    /**
-     * Validates that a string is not null or empty.
-     */
+    // Validates that a string is non-null and non-empty.
     public static boolean isValidString(String value) {
-        // TODO: Implement
-        return false;
+        return value != null && !value.trim().isEmpty();
     }
     
-    /**
-     * Validates that a number is positive.
-     */
+    // Validates that a number is positive (greater than zero).
     public static boolean isPositive(double value) {
-        // TODO: Implement
-        return false;
+        return value > 0;
+    }
+
+    // Validates that a number is non-negative (zero or greater).
+    public static boolean isNonNegative(double value) {
+        return value >= 0;
     }
     
-    /**
-     * Validates that a percentage is between 0 and 100.
-     */
+    // Validates that a percentage is between 0 and 100.
     public static boolean isValidPercentage(double value) {
-        // TODO: Implement
-        return false;
+        return value >= 0 && value <= 100;
     }
     
-    /**
-     * Validates that an ID is valid (positive integer).
-     */
+    // Validates that an ID is a positive integer.
     public static boolean isValidId(Integer id) {
-        // TODO: Implement
-        return false;
+        return id != null && id > 0;
     }
 }

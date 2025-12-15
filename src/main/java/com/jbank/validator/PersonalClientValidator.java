@@ -1,59 +1,37 @@
 package com.jbank.validator;
 
-import com.jbank.repository.entities.PersonalClientEntity;
+import com.jbank.model.PersonalClient;
 
-/**
- * Validator for PersonalClient-specific fields.
- * Uses ClientValidator for common fields + validates taxID, creditScore, yearlyIncome, totalDebt.
- */
+// Validator for PersonalClient-specific fields.
 public class PersonalClientValidator {
     
     private PersonalClientValidator() {
         // Prevent instantiation
     }
     
-    /**
-     * Validates a PersonalClientEntity.
-     * Returns true if all fields are valid, false otherwise.
-     */
-    public static boolean validate(PersonalClientEntity entity) {
-        // TODO: Implement
-        // Use ClientValidator.isValidName(entity.getName())
-        // Use ClientValidator.isValidAddress(entity.getAddress())
-        // Use ClientValidator.isValidPhone(entity.getPhone())
-        // Validate taxID, creditScore, yearlyIncome, totalDebt
-        return false;
+    // Validates a PersonalClient Model
+    public static boolean validate(PersonalClient model) {
+        return ClientValidator.isValidName(model.getName()) &&
+               ClientValidator.isValidAddress(model.getAddress()) &&
+               ClientValidator.isValidPhone(model.getPhoneNumber()) &&
+               ClientValidator.isValidTaxID(model.getTaxID()) &&
+               isValidCreditScore(model.getCreditScore()) &&
+               isValidYearlyIncome(model.getYearlyIncome()) &&
+               isValidTotalDebt(model.getTotalDebt());
     }
-    
-    /**
-     * Validates personal client tax ID.
-     */
-    public static boolean isValidTaxId(String taxId) {
-        // TODO: Implement (SSN format validation)
-        return false;
-    }
-    
-    /**
-     * Validates credit score range.
-     */
+
+    // Validates credit score (300-850)
     public static boolean isValidCreditScore(int creditScore) {
-        // TODO: Implement (300-850 range)
-        return false;
+        return creditScore >= 300 && creditScore <= 850;
     }
-    
-    /**
-     * Validates yearly income.
-     */
+
+    // Validates yearly income (must be positive)
     public static boolean isValidYearlyIncome(double yearlyIncome) {
-        // TODO: Implement (use ValidationUtils.isPositive)
-        return false;
+        return ValidationUtils.isPositive(yearlyIncome);
     }
-    
-    /**
-     * Validates total debt.
-     */
+
+    // Validates total debt (non-negative)
     public static boolean isValidTotalDebt(double totalDebt) {
-        // TODO: Implement (non-negative)
-        return false;
+        return ValidationUtils.isNonNegative(totalDebt);
     }
 }

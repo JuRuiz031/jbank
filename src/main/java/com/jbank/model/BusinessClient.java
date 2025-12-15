@@ -67,41 +67,53 @@ public class BusinessClient extends AbstractClient {
         this.annualProfit = annualProfit;
     }
 
-    // Mutators
-    public void updateBusinessType(String newType) {
+    // Setters
+    public void setBusinessType(String newType) {
         if(newType == null || !VALID_BUSINESS_TYPES.contains(newType)) {
             throw new IllegalArgumentException("Invalid business type.");
         }
         this.businessType = newType;
     }
 
-    public void updateContactName(String newContactName) {
+    public void setContactName(String newContactName) {
         if(newContactName == null || newContactName.isEmpty() || newContactName.length() < 3 || newContactName.length() > 50) {
             throw new IllegalArgumentException("Contact name must be between 3 and 50 characters.");
         }
         this.contactName = newContactName;
     }
 
-    public void updateContactTitle(String newContactTitle) {
+    public void setContactTitle(String newContactTitle) {
         if(newContactTitle == null || !VALID_TITLES.contains(newContactTitle)) {
             throw new IllegalArgumentException("Invalid contact title.");
         }
         this.contactTitle = newContactTitle;
     }
 
-    public void updateContactEmail(String newContactEmail) {
+    public void setContactEmail(String newContactEmail) {
         if(newContactEmail == null || !newContactEmail.contains("@")) {
             throw new IllegalArgumentException("Invalid contact email.");
         }
         this.contactEmail = newContactEmail;
     }
 
-    public void updateFinancials(double newTotalAssetValue, double newAnnualRevenue, double newAnnualProfit) {
-        if(newTotalAssetValue < 0 || newAnnualRevenue < 0 || newAnnualProfit < 0) {
-            throw new IllegalArgumentException("Financial values cannot be negative.");
+    public void setTotalAssetValue(double newTotalAssetValue) {
+        if(newTotalAssetValue < 0) {
+            throw new IllegalArgumentException("Total asset value cannot be negative.");
         }
         this.totalAssetValue = newTotalAssetValue;
+    }
+
+    public void setAnnualRevenue(double newAnnualRevenue) {
+        if(newAnnualRevenue < 0) {
+            throw new IllegalArgumentException("Annual revenue cannot be negative.");
+        }
         this.annualRevenue = newAnnualRevenue;
+    }
+
+    public void setAnnualProfit(double newAnnualProfit) {
+        if(newAnnualProfit < 0) {
+            throw new IllegalArgumentException("Annual profit cannot be negative.");
+        }
         this.annualProfit = newAnnualProfit;
     }
 

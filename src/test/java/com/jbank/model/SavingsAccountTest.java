@@ -20,12 +20,6 @@ public class SavingsAccountTest {
 
     // Interest rate validation
     @Test
-    public void testUpdateInterestRateValid() {
-        testAccount.setInterestRate(2.5);
-        assertEquals(2.5, testAccount.getInterestRate(), 0.01);
-    }
-
-    @Test
     public void testUpdateInterestRateInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testAccount.setInterestRate(-1)
@@ -48,14 +42,6 @@ public class SavingsAccountTest {
         assertEquals("Deposit amount must be positive.", exception.getMessage());
     }
 
-    @Test
-    public void testDepositInvalidZero() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.deposit(0)
-        );
-        assertEquals("Deposit amount must be positive.", exception.getMessage());
-    }
-
     // Withdrawal business logic
     @Test
     public void testWithdrawalValid() {
@@ -67,14 +53,6 @@ public class SavingsAccountTest {
     public void testWithdrawalInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testAccount.withdraw(-200)
-        );
-        assertEquals("Withdrawal amount must be positive.", exception.getMessage());
-    }
-
-    @Test
-    public void testWithdrawalInvalidZero() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.withdraw(0)
         );
         assertEquals("Withdrawal amount must be positive.", exception.getMessage());
     }

@@ -42,11 +42,11 @@ public class AbstractAccount {
     }
 
     // Getters
-    public long getAccountID() {
+    public int getAccountID() {
         return accountID;
     }
 
-    public long getCustomerID() {
+    public int getCustomerID() {
         return customerID;
     }
 

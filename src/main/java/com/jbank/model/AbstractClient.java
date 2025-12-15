@@ -26,7 +26,7 @@ public abstract class AbstractClient {
         if(address == null || address.isEmpty()) {
             throw new IllegalArgumentException("Address cannot be null or empty.");
         }
-        if(name == null || name.isEmpty() || name.length() < 3 || name.length() > 50) {
+        if (name == null || name.isEmpty() || name.length() < 3 || name.length() > 50) {
             throw new IllegalArgumentException("Name must be between 3 and 50 characters.");
         }
 
@@ -37,28 +37,29 @@ public abstract class AbstractClient {
     }
 
 
-    // Mutators
-    public void updateCustomerID(int newID) {
+    // Setters
+    public void setCustomerID(int newID) {
         if(newID <= 0) {
             throw new IllegalArgumentException("Customer ID must be positive.");
         }
+        this.customerID = newID;
     }
 
-    public void updatePhoneNumber(String newNumber) {
+    public void setPhoneNumber(String newNumber) {
         if(newNumber == null || newNumber.length() != 10) {
             throw new IllegalArgumentException("Phone number must be exactly 10 digits.");
         }
         this.phoneNumber = newNumber;
     }
 
-    public void updateAddress(String newAddress) {
+    public void setAddress(String newAddress) {
         if(newAddress == null || newAddress.isEmpty()) {
             throw new IllegalArgumentException("Address cannot be null or empty.");
         }
         this.address = newAddress;
     }
 
-    public void updateName(String newName) {
+    public void setName(String newName) {
         if(newName == null || newName.isEmpty() || newName.length() < 3 || newName.length() > 50) {
             throw new IllegalArgumentException("Name must be between 3 and 50 characters.");
         }
@@ -66,11 +67,11 @@ public abstract class AbstractClient {
     }
 
     // Getters
-    public long getCustomerID() {
+    public int getCustomerID() {
         return customerID;
     }
 
-    public String getNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 

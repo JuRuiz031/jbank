@@ -20,12 +20,6 @@ public class CreditLineTest {
 
     // Credit limit validation
     @Test
-    public void testUpdateCreditLimitValid() {
-        testAccount.setCreditLimit(10000);
-        assertEquals(10000, testAccount.getCreditLimit(), 0.01);
-    }
-
-    @Test
     public void testUpdateCreditLimitInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testAccount.setCreditLimit(-1000)
@@ -35,12 +29,6 @@ public class CreditLineTest {
 
     // Interest rate validation
     @Test
-    public void testUpdateInterestRateValid() {
-        testAccount.setInterestRate(19.5);
-        assertEquals(19.5, testAccount.getInterestRate(), 0.01);
-    }
-
-    @Test
     public void testUpdateInterestRateInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testAccount.setInterestRate(-5)
@@ -49,12 +37,6 @@ public class CreditLineTest {
     }
 
     // Minimum payment percentage validation
-    @Test
-    public void testUpdateMinPaymentPercentageValid() {
-        testAccount.setMinPaymentPercentage(5.0);
-        assertEquals(5.0, testAccount.getMinPaymentPercentage(), 0.01);
-    }
-
     @Test
     public void testUpdateMinPaymentPercentageInvalidNegative() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 

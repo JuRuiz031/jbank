@@ -28,7 +28,6 @@ public class BusinessClientValidator {
      * Validates business tax ID (EIN).
      */
     public static boolean isValidEIN(String ein) {
-        // TODO: Implement (EIN format validation)
-        return false;
+        return ClientValidator.isValidTaxID(ein);
     }
 }
