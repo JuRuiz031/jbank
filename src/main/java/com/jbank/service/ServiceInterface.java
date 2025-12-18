@@ -5,17 +5,18 @@ import java.util.Optional;
 /**
  *
  * @author juanf
+ * @param <T> Entity type
+ * @param <U> Model type
  */
-public interface ServiceInterface<T,U> {
+public interface ServiceInterface<T, U> {
 
-    // CRUD operations
-    Integer createEntity(T entity);
-    Optional<T> getEntityById(Integer id);
-    List<T> getAllEntities();
-    T updateEntity(Integer id, T newEntity);
+    // CRUD operations (model-based) - Controller-facing API
+    Integer create(U model);
+    Optional<U> getById(Integer id);
+    List<U> getAll();
+    U update(Integer id, U model);
 
-    // Conversion methods and tools
+    // Conversion methods
     Optional<U> convertEntityToModel(T entity);
     Optional<T> convertModelToEntity(U model);
-    Optional<U> getModelById(Integer id);
 }

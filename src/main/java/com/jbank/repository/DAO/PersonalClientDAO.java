@@ -26,12 +26,12 @@ public class PersonalClientDAO implements DAOinterface<PersonalClientEntity> {
     public Integer create(PersonalClientEntity personalClientEntity) throws SQLException {
         try {
             // First, insert into clients table
-            String clientSql = "INSERT INTO clients (client_type, name, phone_number, address) VALUES (?, ?, ?, ?)";
+            String clientSql = "INSERT INTO clients (client_type, phone_number, address, name) VALUES (?, ?, ?, ?)";
             try(PreparedStatement clientStmt = connection.prepareStatement(clientSql, Statement.RETURN_GENERATED_KEYS)){
                 clientStmt.setString(1, "PERSONAL");
-                clientStmt.setString(2, personalClientEntity.getName());
-                clientStmt.setString(3, personalClientEntity.getPhoneNumber());
-                clientStmt.setString(4, personalClientEntity.getAddress());
+                clientStmt.setString(2, personalClientEntity.getPhoneNumber());
+                clientStmt.setString(3, personalClientEntity.getAddress());
+                clientStmt.setString(4, personalClientEntity.getName());
                 clientStmt.executeUpdate();
                 
                 // Get the generated customer_id
