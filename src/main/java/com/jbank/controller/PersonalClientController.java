@@ -252,16 +252,19 @@ public class PersonalClientController {
 
     private Optional<Integer> readCreditScore(String prompt) {
         while (true) {
-            Optional<Integer> scoreOpt = InputHandler.getIntInput(prompt);
+            String input = InputHandler.getStringInput(prompt);
             
-            if (scoreOpt.isEmpty()) {
-                System.out.println("Invalid credit score. Please enter a score between 300 and 850.");
-                continue;
+            if (input.equalsIgnoreCase("quit")) {
+                return Optional.empty();
             }
             
-            int score = scoreOpt.get();
-            if (PersonalClientValidator.isValidCreditScore(score)) {
-                return Optional.of(score);
+            try {
+                int score = Integer.parseInt(input);
+                if (PersonalClientValidator.isValidCreditScore(score)) {
+                    return Optional.of(score);
+                }
+            } catch (NumberFormatException e) {
+                // Fall through to error message
             }
             
             System.out.println("Invalid credit score. Please enter a score between 300 and 850.");
@@ -270,7 +273,13 @@ public class PersonalClientController {
 
     private Optional<Double> readYearlyIncome(String prompt) {
         while (true) {
-            Optional<Double> incomeOpt = InputHandler.getDoubleInput(prompt);
+            String input = InputHandler.getStringInput(prompt);
+            
+            if (input.equalsIgnoreCase("quit")) {
+                return Optional.empty();
+            }
+            
+            Optional<Double> incomeOpt = ValidationUtils.parseCurrencyString(input);
             
             if (incomeOpt.isEmpty()) {
                 System.out.println("Invalid yearly income. Please enter a positive amount.");
@@ -288,7 +297,13 @@ public class PersonalClientController {
 
     private Optional<Double> readTotalDebt(String prompt) {
         while (true) {
-            Optional<Double> debtOpt = InputHandler.getDoubleInput(prompt);
+            String input = InputHandler.getStringInput(prompt);
+            
+            if (input.equalsIgnoreCase("quit")) {
+                return Optional.empty();
+            }
+            
+            Optional<Double> debtOpt = ValidationUtils.parseCurrencyString(input);
             
             if (debtOpt.isEmpty()) {
                 System.out.println("Invalid total debt. Please enter a non-negative amount.");

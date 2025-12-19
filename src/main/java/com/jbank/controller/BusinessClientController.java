@@ -336,7 +336,13 @@ public class BusinessClientController {
 
     private Optional<Double> readTotalAssetValue(String prompt) {
         while (true) {
-            Optional<Double> valueOpt = InputHandler.getDoubleInput(prompt);
+            String input = InputHandler.getStringInput(prompt);
+            
+            if (input.equalsIgnoreCase("quit")) {
+                return Optional.empty();
+            }
+            
+            Optional<Double> valueOpt = ValidationUtils.parseCurrencyString(input);
             
             if (valueOpt.isEmpty()) {
                 System.out.println("Invalid total asset value. Please enter a non-negative amount.");
@@ -354,7 +360,13 @@ public class BusinessClientController {
 
     private Optional<Double> readAnnualRevenue(String prompt) {
         while (true) {
-            Optional<Double> revenueOpt = InputHandler.getDoubleInput(prompt);
+            String input = InputHandler.getStringInput(prompt);
+            
+            if (input.equalsIgnoreCase("quit")) {
+                return Optional.empty();
+            }
+            
+            Optional<Double> revenueOpt = ValidationUtils.parseCurrencyString(input);
             
             if (revenueOpt.isEmpty()) {
                 System.out.println("Invalid annual revenue. Please enter a non-negative amount.");
@@ -372,10 +384,16 @@ public class BusinessClientController {
 
     private Optional<Double> readAnnualProfit(String prompt) {
         while (true) {
-            Optional<Double> profitOpt = InputHandler.getDoubleInput(prompt);
+            String input = InputHandler.getStringInput(prompt);
+            
+            if (input.equalsIgnoreCase("quit")) {
+                return Optional.empty();
+            }
+            
+            Optional<Double> profitOpt = ValidationUtils.parseCurrencyString(input);
             
             if (profitOpt.isEmpty()) {
-                System.out.println("Invalid annual profit. Please enter a valid amount.");
+                System.out.println("Invalid annual profit. Please enter a valid amount (can be negative for losses).");
                 continue;
             }
             
@@ -384,7 +402,7 @@ public class BusinessClientController {
                 return Optional.of(profit);
             }
             
-            System.out.println("Invalid annual profit. Please enter a valid amount.");
+            System.out.println("Invalid annual profit. Please enter a valid amount (can be negative for losses).");
         }
     }
 
