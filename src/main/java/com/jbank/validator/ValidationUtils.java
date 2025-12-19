@@ -1,4 +1,6 @@
 package com.jbank.validator;
+import java.util.Optional;
+
 /**
  *
  * @author juanf
@@ -41,5 +43,33 @@ public class ValidationUtils {
         return isNonNegative(amount) &&
         amount == Double.parseDouble(String.format("%.2f", amount));
         
+    }
+
+    // Parses a currency string with optional commas (e.g., "1,234.56") to a double
+    // Returns Optional.empty() if format is invalid
+    public static Optional<Double> parseCurrencyString(String input) {
+        if (!isValidString(input)) {
+            return Optional.empty();
+        }
+        
+        try {
+            // Remove commas and parse
+            String cleaned = input.replaceAll(",", "");
+            double amount = Double.parseDouble(cleaned);
+            
+            // Validate it's a proper dollar amount
+            if (isValidDollarAmount(amount)) {
+                return Optional.of(amount);
+            }
+            return Optional.empty();
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
+    }
+
+    // Formats a double as a currency string with commas and exactly 2 decimal places
+    // e.g., 1234.5 becomes "1,234.50"
+    public static String formatCurrency(double amount) {
+        return String.format("%,.2f", amount);
     }
 }

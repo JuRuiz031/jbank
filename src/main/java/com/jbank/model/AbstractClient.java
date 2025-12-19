@@ -46,8 +46,8 @@ public abstract class AbstractClient {
     }
 
     public void setPhoneNumber(String newNumber) {
-        if(newNumber == null || newNumber.length() != 10) {
-            throw new IllegalArgumentException("Phone number must be exactly 10 digits.");
+        if(newNumber == null || newNumber.replaceAll("[^0-9]", "").length() != 10) {
+            throw new IllegalArgumentException("Phone number must contain exactly 10 digits.");
         }
         this.phoneNumber = newNumber;
     }

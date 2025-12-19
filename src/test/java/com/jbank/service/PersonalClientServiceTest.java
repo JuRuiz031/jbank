@@ -189,6 +189,28 @@ public class PersonalClientServiceTest {
     }
 
     @Test
+    public void testGetByTaxID_HappyPath() throws Exception {
+        when(personalClientDAO.getByTaxID("123456789")).thenReturn(Optional.of(validEntity));
+
+        Optional<PersonalClient> result = service.getByTaxID("123456789");
+
+        assertTrue(result.isPresent());
+        assertEquals("John Doe", result.get().getName());
+        assertEquals("123456789", result.get().getTaxID());
+        verify(personalClientDAO).getByTaxID("123456789");
+    }
+
+    @Test
+    public void testGetByTaxID_NotFound() throws Exception {
+        when(personalClientDAO.getByTaxID("999999999")).thenReturn(Optional.empty());
+
+        Optional<PersonalClient> result = service.getByTaxID("999999999");
+
+        assertTrue(result.isEmpty());
+        verify(personalClientDAO).getByTaxID("999999999");
+    }
+
+    @Test
     public void testGetAll_ConvertsEntities() throws Exception {
         when(personalClientDAO.getAll()).thenReturn(List.of(validEntity));
 
@@ -223,6 +245,26 @@ public class PersonalClientServiceTest {
         PersonalClientEntity sent = captor.getValue();
         assertEquals("(555) 123-4567", sent.getPhoneNumber());
         assertEquals("123-45-6789", sent.getTaxID());
+    }
+
+    @Test
+    public void testDelete_HappyPath() throws Exception {
+        when(personalClientDAO.deleteByID(1)).thenReturn(true);
+
+        boolean result = service.delete(1);
+
+        assertTrue(result);
+        verify(personalClientDAO).deleteByID(1);
+    }
+
+    @Test
+    public void testDelete_NotFound() throws Exception {
+        when(personalClientDAO.deleteByID(99)).thenReturn(false);
+
+        boolean result = service.delete(99);
+
+        assertTrue(!result);
+        verify(personalClientDAO).deleteByID(99);
     }
 
     // ===== Entity to Model Conversion Tests =====
