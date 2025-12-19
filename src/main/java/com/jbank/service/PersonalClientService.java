@@ -19,8 +19,16 @@ public class PersonalClientService implements ServiceInterface<PersonalClientEnt
     // Logger for the class
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonalClientService.class);
 
-    // DAO instance
-    private final PersonalClientDAO personalClientDAO = new PersonalClientDAO();
+    // DAO instance (constructor injected for testability)
+    private final PersonalClientDAO personalClientDAO;
+
+    public PersonalClientService() {
+        this(new PersonalClientDAO());
+    }
+
+    public PersonalClientService(PersonalClientDAO personalClientDAO) {
+        this.personalClientDAO = personalClientDAO;
+    }
 
     // Create PersonalClient
     @Override

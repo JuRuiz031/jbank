@@ -1,14 +1,27 @@
 package com.jbank.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.jbank.model.PersonalClient;
+import com.jbank.repository.DAO.PersonalClientDAO;
 import com.jbank.repository.entities.PersonalClientEntity;
 
 /**
@@ -17,17 +30,20 @@ import com.jbank.repository.entities.PersonalClientEntity;
  * 
  * @author juanf
  */
+@ExtendWith(MockitoExtension.class)
 public class PersonalClientServiceTest {
 
+    @Spy
+    @InjectMocks
     private PersonalClientService service;
+    @Mock
+    private PersonalClientDAO personalClientDAO;
     
     private PersonalClient validClient;
     private PersonalClientEntity validEntity;
 
     @BeforeEach
     public void setUp() {
-        service = new PersonalClientService();
-        
         // Valid test data
         validClient = new PersonalClient(
             0,
@@ -124,12 +140,89 @@ public class PersonalClientServiceTest {
         assertEquals("111-22-3333", result.get().getTaxID());
     }
 
+    // ===== DAO interaction tests =====
+
     @Test
-    public void testConvertModelToEntity_NegativeResult_InvalidTaxID() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> 
-            new PersonalClient(0, "John Doe", "123 Main St", "5551234567", "12345", 750, 75000.00, 5000.00)
+    public void testCreate_DelegatesToDAOWithFormattedValues() throws Exception {
+        when(personalClientDAO.create(any())).thenReturn(42);
+        ArgumentCaptor<PersonalClientEntity> captor = ArgumentCaptor.forClass(PersonalClientEntity.class);
+
+        Integer id = service.create(validClient);
+
+        assertEquals(42, id);
+        verify(personalClientDAO).create(captor.capture());
+        PersonalClientEntity entity = captor.getValue();
+        assertEquals("(555) 123-4567", entity.getPhoneNumber());
+        assertEquals("123-45-6789", entity.getTaxID());
+    }
+
+    @Test
+    public void testCreate_WhenConversionFails_ReturnsNullAndSkipsDAO() {
+        doReturn(Optional.empty()).when(service).convertModelToEntity(validClient);
+
+        Integer id = service.create(validClient);
+
+        assertNull(id);
+        verifyNoInteractions(personalClientDAO);
+    }
+
+    @Test
+    public void testGetById_HappyPath() throws Exception {
+        when(personalClientDAO.getByID(1)).thenReturn(Optional.of(validEntity));
+
+        Optional<PersonalClient> result = service.getById(1);
+
+        assertTrue(result.isPresent());
+        assertEquals("John Doe", result.get().getName());
+        assertEquals("123456789", result.get().getTaxID());
+        verify(personalClientDAO).getByID(1);
+    }
+
+    @Test
+    public void testGetById_NotFound() throws Exception {
+        when(personalClientDAO.getByID(99)).thenReturn(Optional.empty());
+
+        Optional<PersonalClient> result = service.getById(99);
+
+        assertTrue(result.isEmpty());
+        verify(personalClientDAO).getByID(99);
+    }
+
+    @Test
+    public void testGetAll_ConvertsEntities() throws Exception {
+        when(personalClientDAO.getAll()).thenReturn(List.of(validEntity));
+
+        List<PersonalClient> result = service.getAll();
+
+        assertEquals(1, result.size());
+        assertEquals("John Doe", result.get(0).getName());
+        verify(personalClientDAO).getAll();
+    }
+
+    @Test
+    public void testUpdate_UsesDAOAndReturnsConvertedModel() throws Exception {
+        PersonalClientEntity updatedEntity = new PersonalClientEntity(
+            1,
+            "(555) 999-9999",
+            "New Address",
+            "John Doe",
+            "123-45-6789",
+            800,
+            80000.0,
+            1000.0
         );
-        assertTrue(ex.getMessage() != null && !ex.getMessage().isEmpty());
+        when(personalClientDAO.updateByID(any())).thenReturn(updatedEntity);
+
+        PersonalClient result = service.update(1, validClient);
+
+        assertEquals(800, result.getCreditScore());
+        assertEquals("New Address", result.getAddress());
+
+        ArgumentCaptor<PersonalClientEntity> captor = ArgumentCaptor.forClass(PersonalClientEntity.class);
+        verify(personalClientDAO).updateByID(captor.capture());
+        PersonalClientEntity sent = captor.getValue();
+        assertEquals("(555) 123-4567", sent.getPhoneNumber());
+        assertEquals("123-45-6789", sent.getTaxID());
     }
 
     // ===== Entity to Model Conversion Tests =====
