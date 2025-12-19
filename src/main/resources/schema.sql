@@ -6,7 +6,7 @@ CREATE TABLE clients (
     customer_id SERIAL PRIMARY KEY,
     client_type VARCHAR(10) NOT NULL CHECK (client_type IN ('PERSONAL', 'BUSINESS')),
     phone_number VARCHAR(10) NOT NULL,
-    address VARCHAR(255) NOT NULL,
+    address VARCHAR(200) NOT NULL,
     name VARCHAR(50) NOT NULL
 );
 

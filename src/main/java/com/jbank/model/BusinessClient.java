@@ -38,8 +38,8 @@ public class BusinessClient extends AbstractClient {
         super(customerID, phoneNumber, address, name);
 
         // Input validation
-        if(ein == null || ein.isEmpty() || ein.length() != 9) {
-            throw new IllegalArgumentException("EIN must be exactly 9 characters.");
+        if(ein == null || ein.replaceAll("[^0-9]", "").length() != 9) {
+            throw new IllegalArgumentException("EIN must contain exactly 9 digits.");
         }
         if(businessType == null || !VALID_BUSINESS_TYPES.contains(businessType)) {
             throw new IllegalArgumentException("Invalid business type.");

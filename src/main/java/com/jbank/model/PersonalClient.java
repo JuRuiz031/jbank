@@ -14,8 +14,8 @@ public class PersonalClient extends AbstractClient {
         super(customerID, phoneNumber, address, name);
 
         // Input validation
-        if(taxID == null || taxID.isEmpty() || taxID.length() != 9) {
-            throw new IllegalArgumentException("Tax ID must be exactly 9 characters.");
+        if(taxID == null || taxID.replaceAll("[^0-9]", "").length() != 9) {
+            throw new IllegalArgumentException("Tax ID must contain exactly 9 digits.");
         }
 
         if (creditScore < 300 || creditScore > 850) {

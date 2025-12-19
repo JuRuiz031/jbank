@@ -27,11 +27,11 @@ public class PersonalClientValidator {
 
     // Validates yearly income (must be positive)
     public static boolean isValidYearlyIncome(double yearlyIncome) {
-        return ValidationUtils.isPositive(yearlyIncome);
+        return ValidationUtils.isPositive(yearlyIncome) && ValidationUtils.isValidDollarAmount(yearlyIncome);
     }
 
     // Validates total debt (non-negative)
     public static boolean isValidTotalDebt(double totalDebt) {
-        return ValidationUtils.isNonNegative(totalDebt);
+        return ValidationUtils.isNonNegative(totalDebt) && ValidationUtils.isValidDollarAmount(totalDebt);
     }
 }

@@ -18,10 +18,10 @@ public abstract class AbstractClient {
     private List<AbstractAccount> accounts = new ArrayList<>();
 
     // Constructor
-    protected AbstractClient(int customerID,String phoneNumber, String address, String name) {
+    protected AbstractClient(int customerID, String phoneNumber, String address, String name) {
         // Input validation
-        if(phoneNumber == null || phoneNumber.length() != 10) {
-            throw new IllegalArgumentException("Phone number must be exactly 10 digits.");
+        if(phoneNumber == null || phoneNumber.replaceAll("[^0-9]", "").length() != 10) {
+            throw new IllegalArgumentException("Phone number must contain exactly 10 digits.");
         }
         if(address == null || address.isEmpty()) {
             throw new IllegalArgumentException("Address cannot be null or empty.");

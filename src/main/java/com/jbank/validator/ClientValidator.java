@@ -55,15 +55,10 @@ public class ClientValidator {
     // Validates tax ID (SSN, ITIN, or EIN - all 9 digits with optional hyphens/spaces).
     // Accepts formats like: 123456789, 123-45-6789, 123 45 6789, 12-3456789, etc.
     public static boolean isValidTaxID(String taxID) {
-        if (!ValidationUtils.isValidString(taxID)) {
+        if (!ValidationUtils.isValidString(taxID) || !containsOnlyDigitsAndSeparators(taxID, "\\- ")) {
             return false;
         }
-        // Allow only digits, hyphens, and literal spaces
-        if (!containsOnlyDigitsAndSeparators(taxID, "\\- ")) {
-            return false;
-        }
-        // Strip to just digits and verify length == 9
-        String digitsOnly = stripNonDigits(taxID);
-        return digitsOnly.length() == 9;
+        String digits = stripNonDigits(taxID);
+        return digits.length() == 9;
     }
 }

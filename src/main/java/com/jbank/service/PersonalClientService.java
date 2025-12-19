@@ -22,7 +22,7 @@ public class PersonalClientService implements ServiceInterface<PersonalClientEnt
     // DAO instance
     private final PersonalClientDAO personalClientDAO = new PersonalClientDAO();
 
-    // Public API - CRUD operations (model-based)
+    // Create PersonalClient
     @Override
     public Integer create(PersonalClient model) {
         try {
@@ -111,12 +111,15 @@ public class PersonalClientService implements ServiceInterface<PersonalClientEnt
     @Override
     public Optional<PersonalClientEntity> convertModelToEntity(PersonalClient model) {
         try {
+            String formattedPhone = formatPhoneNumber(model.getPhoneNumber());
+            String formattedTaxID = formatTaxID(model.getTaxID());
+            
             PersonalClientEntity entity = new PersonalClientEntity(
                 model.getCustomerID(),
-                model.getPhoneNumber(),
+                formattedPhone,
                 model.getAddress(),
                 model.getName(),
-                model.getTaxID(),
+                formattedTaxID,
                 model.getCreditScore(),
                 model.getYearlyIncome(),
                 model.getTotalDebt()
@@ -126,6 +129,16 @@ public class PersonalClientService implements ServiceInterface<PersonalClientEnt
             LOGGER.error("Error converting PersonalClient model to entity: {}", e.getMessage());
             return Optional.empty();
         }
+    }
+
+    private String formatPhoneNumber(String phone) {
+        String digits = phone.replaceAll("[^0-9]", "");
+        return String.format("(%s) %s-%s", digits.substring(0, 3), digits.substring(3, 6), digits.substring(6));
+    }
+
+    private String formatTaxID(String taxID) {
+        String digits = taxID.replaceAll("[^0-9]", "");
+        return String.format("%s-%s-%s", digits.substring(0, 3), digits.substring(3, 5), digits.substring(5));
     }
 
 }

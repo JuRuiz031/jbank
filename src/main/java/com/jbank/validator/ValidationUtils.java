@@ -35,4 +35,11 @@ public class ValidationUtils {
     public static boolean isValidId(Integer id) {
         return id != null && id > 0;
     }
+
+    // Validates that a dollar amount is correct (non-negative and has at most two decimal places).
+    public static boolean isValidDollarAmount(double amount) {
+        return isNonNegative(amount) &&
+        amount == Double.parseDouble(String.format("%.2f", amount));
+        
+    }
 }

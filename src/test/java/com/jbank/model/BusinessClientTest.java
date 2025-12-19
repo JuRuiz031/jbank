@@ -28,7 +28,7 @@ public class BusinessClientTest {
                 null, "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
-        assertEquals("EIN must be exactly 9 characters.", exception.getMessage());
+        assertEquals("EIN must contain exactly 9 digits.", exception.getMessage());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class BusinessClientTest {
                 "12345", "LLC", "John Smith", "CEO", "john@techcorp.com", 
                 500000, 1000000, 150000)
         );
-        assertEquals("EIN must be exactly 9 characters.", exception.getMessage());
+        assertEquals("EIN must contain exactly 9 digits.", exception.getMessage());
     }
 
     // Business type validation

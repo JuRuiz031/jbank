@@ -25,7 +25,7 @@ public class PersonalClientTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new PersonalClient(1, "John", "123 Main", "1234567890", null, 700, 50000, 15000)
         );
-        assertEquals("Tax ID must be exactly 9 characters.", exception.getMessage());
+        assertEquals("Tax ID must contain exactly 9 digits.", exception.getMessage());
     }
 
     @Test
@@ -33,7 +33,7 @@ public class PersonalClientTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             new PersonalClient(1, "John", "123 Main", "1234567890", "12345", 700, 50000, 15000)
         );
-        assertEquals("Tax ID must be exactly 9 characters.", exception.getMessage());
+        assertEquals("Tax ID must contain exactly 9 digits.", exception.getMessage());
     }
 
     // Credit score validation
