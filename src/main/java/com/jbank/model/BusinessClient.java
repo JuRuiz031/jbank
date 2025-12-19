@@ -24,7 +24,6 @@ public class BusinessClient extends AbstractClient {
     // Contact person details
     private String contactName;
     private String contactTitle;
-    private String contactEmail;
 
     // Financial details
     private double totalAssetValue;
@@ -33,7 +32,7 @@ public class BusinessClient extends AbstractClient {
 
     // Constructor
     public BusinessClient(int customerID, String name, String address, String phoneNumber, String ein, String businessType,
-                          String contactName, String contactTitle, String contactEmail,
+                          String contactName, String contactTitle,
                           double totalAssetValue, double annualRevenue, double annualProfit) {
         super(customerID, phoneNumber, address, name);
 
@@ -50,10 +49,7 @@ public class BusinessClient extends AbstractClient {
         if(contactTitle == null || !VALID_TITLES.contains(contactTitle)) {
             throw new IllegalArgumentException("Invalid contact title.");
         }
-        if(contactEmail == null || !contactEmail.contains("@")) {
-            throw new IllegalArgumentException("Invalid contact email.");
-        }
-        if(totalAssetValue < 0 || annualRevenue < 0 || annualProfit < 0) {
+        if(totalAssetValue < 0 || annualRevenue < 0) {
             throw new IllegalArgumentException("Financial values cannot be negative.");
         }
 
@@ -61,7 +57,6 @@ public class BusinessClient extends AbstractClient {
         this.businessType = businessType;
         this.contactName = contactName;
         this.contactTitle = contactTitle;
-        this.contactEmail = contactEmail;
         this.totalAssetValue = totalAssetValue;
         this.annualRevenue = annualRevenue;
         this.annualProfit = annualProfit;
@@ -87,13 +82,6 @@ public class BusinessClient extends AbstractClient {
             throw new IllegalArgumentException("Invalid contact title.");
         }
         this.contactTitle = newContactTitle;
-    }
-
-    public void setContactEmail(String newContactEmail) {
-        if(newContactEmail == null || !newContactEmail.contains("@")) {
-            throw new IllegalArgumentException("Invalid contact email.");
-        }
-        this.contactEmail = newContactEmail;
     }
 
     public void setTotalAssetValue(double newTotalAssetValue) {
@@ -132,10 +120,6 @@ public class BusinessClient extends AbstractClient {
 
     public String getContactTitle() {
         return contactTitle;
-    }
-
-    public String getContactEmail() {
-        return contactEmail;
     }
 
     public double getTotalAssetValue() {

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 
 /**
@@ -34,10 +36,11 @@ public class SavingsAccountTest {
         assertEquals(6000, testAccount.getBalance(), 0.01);
     }
 
-    @Test
-    public void testDepositInvalidNegative() {
+    @ParameterizedTest
+    @ValueSource(doubles = {-500, -0.01, -1000})
+    public void testDepositInvalidNegative(double amount) {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.deposit(-500)
+            testAccount.deposit(amount)
         );
         assertEquals("Deposit amount must be positive.", exception.getMessage());
     }
@@ -49,10 +52,11 @@ public class SavingsAccountTest {
         assertEquals(4000, testAccount.getBalance(), 0.01);
     }
 
-    @Test
-    public void testWithdrawalInvalidNegative() {
+    @ParameterizedTest
+    @ValueSource(doubles = {-200, -0.01, -5000})
+    public void testWithdrawalInvalidNegative(double amount) {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.withdraw(-200)
+            testAccount.withdraw(amount)
         );
         assertEquals("Withdrawal amount must be positive.", exception.getMessage());
     }

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 
 /**
@@ -37,18 +39,11 @@ public class CreditLineTest {
     }
 
     // Minimum payment percentage validation
-    @Test
-    public void testUpdateMinPaymentPercentageInvalidNegative() {
+    @ParameterizedTest
+    @ValueSource(doubles = {-1, -10, 101, 150})
+    public void testUpdateMinPaymentPercentageInvalid(double percentage) {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.setMinPaymentPercentage(-1)
-        );
-        assertEquals("Minimum payment percentage must be between 0 and 100.", exception.getMessage());
-    }
-
-    @Test
-    public void testUpdateMinPaymentPercentageInvalidTooHigh() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
-            testAccount.setMinPaymentPercentage(101)
+            testAccount.setMinPaymentPercentage(percentage)
         );
         assertEquals("Minimum payment percentage must be between 0 and 100.", exception.getMessage());
     }

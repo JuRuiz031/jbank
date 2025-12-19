@@ -2,12 +2,13 @@ package com.jbank;
 
 import java.util.Optional;
 
+import com.jbank.controller.BusinessClientController;
 import com.jbank.controller.PersonalClientController;
 import com.jbank.util.InputHandler;
 
 public class App {
     private static final PersonalClientController personalClientController = new PersonalClientController();
-    //private static final BusinessClientController businessClientController = new BusinessClientController();
+    private static final BusinessClientController businessClientController = new BusinessClientController();
     private static boolean appRunning = true;
     
     public static void main(String[] args) {
@@ -54,7 +55,7 @@ public class App {
 
             switch(choice) {
                 case 1 -> personalClientController.createNewClient();
-                case 2 -> System.out.println("Create new business customer functionality is not yet implemented.");
+                case 2 -> businessClientController.createNewClient();
                 case 3 -> inMenu = false;
                 case 4 -> {
                     System.out.println("Thank you for using JBank. Goodbye!");
@@ -83,7 +84,7 @@ public class App {
 
             switch(choice) {
                 case 1 -> personalClientController.handleExistingClient();
-                case 2 -> System.out.println("Handle existing business customer functionality is not yet implemented.");
+                case 2 -> businessClientController.handleExistingClient();
                 case 3 -> inMenu = false;
                 case 4 -> {
                     System.out.println("Thank you for using JBank. Goodbye!");
