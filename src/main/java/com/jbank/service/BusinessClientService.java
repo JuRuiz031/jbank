@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jbank.model.BusinessClient;
 import com.jbank.repository.DAO.BusinessClientDAO;
+import com.jbank.repository.DAO.ClientAccountDAO;
 import com.jbank.repository.entities.BusinessClientEntity;
 
 /**
@@ -23,13 +24,15 @@ public class BusinessClientService implements ServiceInterface<BusinessClientEnt
 
     // DAO instance (constructor injected for testability)
     private final BusinessClientDAO businessClientDAO;
+    private final ClientAccountDAO clientAccountDAO;
 
     public BusinessClientService() {
-        this(new BusinessClientDAO());
+        this(new BusinessClientDAO(), new ClientAccountDAO());
     }
 
-    public BusinessClientService(BusinessClientDAO businessClientDAO) {
+    public BusinessClientService(BusinessClientDAO businessClientDAO, ClientAccountDAO clientAccountDAO) {
         this.businessClientDAO = businessClientDAO;
+        this.clientAccountDAO = clientAccountDAO;
     }
 
     // Create BusinessClient
@@ -113,13 +116,32 @@ public class BusinessClientService implements ServiceInterface<BusinessClientEnt
         }
     }
 
-    // Delete BusinessClient by ID
+    /**
+     * Delete BusinessClient by ID.
+     * The database CASCADE will automatically remove client_accounts entries.
+     * However, accounts themselves are NOT deleted - they may be joint accounts.
+     * Primary accounts without other owners will become orphaned (this is intentional).
+     */
     public boolean delete(Integer id) {
         try {
             return businessClientDAO.deleteByID(id);
         } catch (SQLException e) {
             LOGGER.warn("Database error deleting BusinessClient with ID {}: {}", id, e.getMessage());
             return false;
+        }
+    }
+
+    /**
+     * Get all accounts owned by this client.
+     * @param clientId Customer ID
+     * @return Map of account IDs to ownership types (PRIMARY/JOINT)
+     */
+    public java.util.Map<Integer, String> getClientAccounts(int clientId) {
+        try {
+            return clientAccountDAO.getAccountsByClient(clientId);
+        } catch (SQLException e) {
+            LOGGER.warn("Database error retrieving accounts for client {}: {}", clientId, e.getMessage());
+            return java.util.Map.of();
         }
     }
 

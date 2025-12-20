@@ -1,5 +1,7 @@
 package com.jbank.validator;
 
+import com.jbank.model.SavingsAccount;
+
 /**
  * Validator for SavingsAccount-specific fields.
  * Uses AccountValidator for common fields + validates interest rate and withdrawal limit.
@@ -11,24 +13,29 @@ public class SavingsAccountValidator {
     }
     
     /**
-     * Validates a SavingsAccountEntity.
+     * Validates a SavingsAccount model.
      * Returns true if all fields are valid, false otherwise.
      */
-    // TODO: Add validate method once SavingsAccountEntity is created
-    
-    /**
-     * Validates interest rate.
-     */
-    public static boolean isValidInterestRate(double interestRate) {
-        // TODO: Implement (use ValidationUtils.isValidPercentage)
-        return false;
+    public static boolean validate(SavingsAccount account) {
+        return account != null &&
+               AccountValidator.isValidClientId(account.getCustomerID()) &&
+               AccountValidator.isValidAccountId(account.getAccountID()) &&
+               AccountValidator.isValidBalance(account.getBalance()) &&
+               isValidInterestRate(account.getInterestRate()) &&
+               isValidWithdrawalLimit(account.getWithdrawalLimit());
     }
     
     /**
-     * Validates withdrawal limit.
+     * Validates interest rate (percentage between 0 and 100).
+     */
+    public static boolean isValidInterestRate(double interestRate) {
+        return ValidationUtils.isValidPercentage(interestRate);
+    }
+    
+    /**
+     * Validates withdrawal limit (positive integer).
      */
     public static boolean isValidWithdrawalLimit(int withdrawalLimit) {
-        // TODO: Implement (positive integer)
-        return false;
+        return withdrawalLimit > 0;
     }
 }

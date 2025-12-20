@@ -1,60 +1,290 @@
 package com.jbank.service;
 
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-// import com.jbank.repository.DAO.SavingsAccountDAO;
-// import com.jbank.repository.entities.SavingsAccountEntity;
+
+import com.jbank.model.SavingsAccount;
+import com.jbank.repository.DAO.ClientAccountDAO;
+import com.jbank.repository.DAO.SavingsAccountDAO;
+import com.jbank.repository.entities.SavingsAccountEntity;
+import com.jbank.validator.SavingsAccountValidator;
 
 /**
  * Service layer for SavingsAccount operations.
  * Handles business logic, validation, and DAO orchestration.
+ * Manages withdrawal counters and interest calculations.
  * 
  * @author juanf
  */
-public class SavingsAccountService /* implements ServiceInterface<SavingsAccountEntity, SavingsAccount> */ {
-    // Logger for the class
+public class SavingsAccountService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SavingsAccountService.class);
 
-    // DAO instance
-    // TODO: Uncomment when SavingsAccountDAO and SavingsAccountEntity are created
-    // private final SavingsAccountDAO savingsAccountDAO = new SavingsAccountDAO();
+    private final SavingsAccountDAO savingsAccountDAO;
+    private final ClientAccountDAO clientAccountDAO;
 
-    // TODO: Implement ServiceInterface methods once SavingsAccountEntity is created
-    /*
-    @Override
-    public Integer createEntity(SavingsAccountEntity entity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public SavingsAccountService() {
+        this(new SavingsAccountDAO(), new ClientAccountDAO());
     }
 
-    @Override
-    public Optional<SavingsAccountEntity> getEntityById(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public SavingsAccountService(SavingsAccountDAO savingsAccountDAO, ClientAccountDAO clientAccountDAO) {
+        this.savingsAccountDAO = savingsAccountDAO;
+        this.clientAccountDAO = clientAccountDAO;
     }
 
-    @Override
-    public List<SavingsAccountEntity> getAllEntities() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    /**
+     * Create a new savings account and assign it to a client as PRIMARY owner.
+     */
+    public Integer create(SavingsAccount model, int clientId) {
+        try {
+            // Validate the account model
+            if (!SavingsAccountValidator.validate(model)) {
+                LOGGER.warn("Invalid SavingsAccount data: account validation failed");
+                return null;
+            }
+            
+            Optional<SavingsAccountEntity> entityOpt = convertModelToEntity(model);
+            if (entityOpt.isEmpty()) {
+                LOGGER.error("Failed to convert SavingsAccount model to entity");
+                return null;
+            }
+            
+            Integer accountId = savingsAccountDAO.create(entityOpt.get());
+            if (accountId != null) {
+                // Assign account to client as PRIMARY owner
+                boolean assigned = clientAccountDAO.assignAccountToClient(clientId, accountId, "PRIMARY");
+                if (!assigned) {
+                    // Rollback: delete the account we just created to prevent orphaned data
+                    savingsAccountDAO.deleteByID(accountId);
+                    LOGGER.error("Failed to assign savings account {} to client {}, rolling back account creation", accountId, clientId);
+                    return null;
+                }
+            }
+            return accountId;
+        } catch (SQLException e) {
+            LOGGER.warn("Database error creating SavingsAccount: {}", e.getMessage());
+            return null;
+        }
     }
 
-    @Override
-    public SavingsAccountEntity updateEntity(Integer id, SavingsAccountEntity newEntity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    /**
+     * Get savings account by ID.
+     */
+    public Optional<SavingsAccount> getById(Integer id) {
+        try {
+            Optional<SavingsAccountEntity> entityOpt = savingsAccountDAO.getByID(id);
+            if (entityOpt.isEmpty()) {
+                LOGGER.debug("SavingsAccount not found with ID {}", id);
+                return Optional.empty();
+            }
+            return convertEntityToModel(entityOpt.get());
+        } catch (SQLException e) {
+            LOGGER.warn("Database error retrieving SavingsAccount by ID {}: {}", id, e.getMessage());
+            return Optional.empty();
+        }
     }
 
-    // Conversion methods and tools
-    @Override
+    /**
+     * Get all savings accounts.
+     */
+    public List<SavingsAccount> getAll() {
+        try {
+            List<SavingsAccountEntity> entities = savingsAccountDAO.getAll();
+            return entities.stream()
+                    .map(this::convertEntityToModel)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .toList();
+        } catch (SQLException e) {
+            LOGGER.warn("Database error retrieving all SavingsAccounts: {}", e.getMessage());
+            return List.of();
+        }
+    }
+
+    /**
+     * Update savings account.
+     */
+    public SavingsAccount update(Integer id, SavingsAccount model) {
+        try {
+            // Validate the account model
+            if (!SavingsAccountValidator.validate(model)) {
+                LOGGER.warn("Invalid SavingsAccount data: account validation failed");
+                return null;
+            }
+            
+            Optional<SavingsAccountEntity> entityOpt = convertModelToEntity(model);
+            if (entityOpt.isEmpty()) {
+                LOGGER.error("Failed to convert SavingsAccount model to entity");
+                return null;
+            }
+            
+            SavingsAccountEntity updated = savingsAccountDAO.updateByID(entityOpt.get());
+            return convertEntityToModel(updated).orElse(null);
+        } catch (SQLException e) {
+            LOGGER.warn("Database error updating SavingsAccount with ID {}: {}", id, e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Delete savings account.
+     */
+    public boolean delete(Integer id) {
+        try {
+            // Remove all client-account relationships first
+            clientAccountDAO.removeAllClientsFromAccount(id);
+            return savingsAccountDAO.deleteByID(id);
+        } catch (SQLException e) {
+            LOGGER.warn("Database error deleting SavingsAccount with ID {}: {}", id, e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Deposit funds into savings account.
+     * Updates balance in both model and database.
+     */
+    public boolean deposit(SavingsAccount account, double depositAmount) {
+        try {
+            account.deposit(depositAmount);
+            
+            // Update in database
+            SavingsAccountEntity entity = new SavingsAccountEntity(
+                account.getAccountID(),
+                account.getCustomerID(),
+                account.getBalance(),
+                account.getInterestRate(),
+                account.getWithdrawalLimit(),
+                account.getWithdrawalCounter()
+            );
+            savingsAccountDAO.updateByID(entity);
+            return true;
+        } catch (IllegalArgumentException e) {
+            LOGGER.warn("Invalid deposit: {}", e.getMessage());
+            return false;
+        } catch (SQLException e) {
+            LOGGER.warn("Database error during deposit: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Withdraw funds from savings account.
+     * Checks withdrawal limit (6 per month) and increments counter.
+     * Updates balance in both model and database.
+     */
+    public boolean withdraw(SavingsAccount account, double withdrawAmount) {
+        try {
+            account.withdraw(withdrawAmount);
+            
+            // Update in database
+            SavingsAccountEntity entity = new SavingsAccountEntity(
+                account.getAccountID(),
+                account.getCustomerID(),
+                account.getBalance(),
+                account.getInterestRate(),
+                account.getWithdrawalLimit(),
+                account.getWithdrawalCounter()
+            );
+            savingsAccountDAO.updateByID(entity);
+            return true;
+        } catch (IllegalArgumentException e) {
+            LOGGER.warn("Invalid withdrawal: {}", e.getMessage());
+            return false;
+        } catch (SQLException e) {
+            LOGGER.warn("Database error during withdrawal: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Apply interest to savings account.
+     * Calculates and adds interest based on current balance and interest rate.
+     */
+    public boolean applyInterest(SavingsAccount account) {
+        try {
+            account.applyInterest();
+            
+            // Update in database
+            SavingsAccountEntity entity = new SavingsAccountEntity(
+                account.getAccountID(),
+                account.getCustomerID(),
+                account.getBalance(),
+                account.getInterestRate(),
+                account.getWithdrawalLimit(),
+                account.getWithdrawalCounter()
+            );
+            savingsAccountDAO.updateByID(entity);
+            
+            LOGGER.info("Applied interest to account {}", account.getAccountID());
+            return true;
+        } catch (SQLException e) {
+            LOGGER.warn("Database error applying interest: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Reset withdrawal counter (typically done monthly).
+     */
+    public boolean resetWithdrawalCounter(SavingsAccount account) {
+        try {
+            account.resetWithdrawalCounter();
+            
+            // Update in database
+            SavingsAccountEntity entity = new SavingsAccountEntity(
+                account.getAccountID(),
+                account.getCustomerID(),
+                account.getBalance(),
+                account.getInterestRate(),
+                account.getWithdrawalLimit(),
+                0
+            );
+            savingsAccountDAO.updateByID(entity);
+            
+            LOGGER.info("Reset withdrawal counter for account {}", account.getAccountID());
+            return true;
+        } catch (SQLException e) {
+            LOGGER.warn("Database error resetting withdrawal counter: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    // Conversion methods
     public Optional<SavingsAccount> convertEntityToModel(SavingsAccountEntity entity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            SavingsAccount account = new SavingsAccount(
+                entity.getCustomerID(),
+                entity.getAccountID(),
+                entity.getBalance(),
+                "Savings Account",
+                entity.getInterestRate(),
+                entity.getWithdrawalLimit()
+            );
+            return Optional.of(account);
+        } catch (IllegalArgumentException e) {
+            LOGGER.warn("Invalid data in entity, cannot convert to model: {}", e.getMessage());
+            return Optional.empty();
+        }
     }
 
-    @Override
     public Optional<SavingsAccountEntity> convertModelToEntity(SavingsAccount model) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            SavingsAccountEntity entity = new SavingsAccountEntity(
+                model.getAccountID(),
+                model.getCustomerID(),
+                model.getBalance(),
+                model.getInterestRate(),
+                model.getWithdrawalLimit(),
+                model.getWithdrawalCounter()
+            );
+            return Optional.of(entity);
+        } catch (IllegalArgumentException e) {
+            LOGGER.warn("Invalid model data, cannot convert to entity: {}", e.getMessage());
+            return Optional.empty();
+        }
     }
-
-    @Override
-    public Optional<SavingsAccount> getModelById(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    */
 }

@@ -1,3 +1,4 @@
+-- Active: 1765398826988@@127.0.0.1@5432@jbank@public
 
 -- Schema for JBank Database
 
@@ -5,7 +6,7 @@
 CREATE TABLE clients (
     customer_id SERIAL PRIMARY KEY,
     client_type VARCHAR(10) NOT NULL CHECK (client_type IN ('PERSONAL', 'BUSINESS')),
-    phone_number VARCHAR(10) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
     address VARCHAR(200) NOT NULL,
     name VARCHAR(50) NOT NULL
 );
@@ -13,7 +14,7 @@ CREATE TABLE clients (
 -- Personal client specific fields
 CREATE TABLE personal_clients (
     customer_id INT PRIMARY KEY,
-    tax_id VARCHAR(9) NOT NULL UNIQUE,
+    tax_id VARCHAR(15) NOT NULL UNIQUE,
     credit_score INT NOT NULL CHECK (credit_score BETWEEN 300 AND 850),
     yearly_income DECIMAL(12, 2) NOT NULL CHECK (yearly_income >= 0),
     total_debt DECIMAL(12, 2) NOT NULL CHECK (total_debt >= 0),
@@ -23,7 +24,7 @@ CREATE TABLE personal_clients (
 -- Business client specific fields
 CREATE TABLE business_clients (
     customer_id INT PRIMARY KEY,
-    ein VARCHAR(9) NOT NULL UNIQUE,
+    ein VARCHAR(15) NOT NULL UNIQUE,
     business_type VARCHAR(50) NOT NULL,
     contact_person_name VARCHAR(50) NOT NULL,
     contact_person_title VARCHAR(50) NOT NULL,

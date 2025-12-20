@@ -1,5 +1,7 @@
 package com.jbank.validator;
 
+import com.jbank.model.CreditLine;
+
 /**
  * Validator for CreditLine-specific fields.
  * Uses AccountValidator for common fields + validates credit limit, interest rate, and minimum payment.
@@ -11,32 +13,37 @@ public class CreditLineValidator {
     }
     
     /**
-     * Validates a CreditLineEntity.
+     * Validates a CreditLine model.
      * Returns true if all fields are valid, false otherwise.
      */
-    // TODO: Add validate method once CreditLineEntity is created
+    public static boolean validate(CreditLine account) {
+        return account != null &&
+               AccountValidator.isValidClientId(account.getCustomerID()) &&
+               AccountValidator.isValidAccountId(account.getAccountID()) &&
+               AccountValidator.isValidBalance(account.getBalance()) &&
+               isValidCreditLimit(account.getCreditLimit()) &&
+               isValidInterestRate(account.getInterestRate()) &&
+               isValidMinPaymentPercentage(account.getMinPaymentPercentage());
+    }
     
     /**
-     * Validates credit limit.
+     * Validates credit limit (positive dollar amount).
      */
     public static boolean isValidCreditLimit(double creditLimit) {
-        // TODO: Implement (use ValidationUtils.isPositive)
-        return false;
+        return ValidationUtils.isPositive(creditLimit) && ValidationUtils.isValidDollarAmount(creditLimit);
     }
     
     /**
-     * Validates interest rate.
+     * Validates interest rate (percentage between 0 and 100).
      */
     public static boolean isValidInterestRate(double interestRate) {
-        // TODO: Implement (use ValidationUtils.isValidPercentage)
-        return false;
+        return ValidationUtils.isValidPercentage(interestRate);
     }
     
     /**
-     * Validates minimum payment percentage.
+     * Validates minimum payment percentage (percentage between 0 and 100).
      */
     public static boolean isValidMinPaymentPercentage(double minPaymentPercentage) {
-        // TODO: Implement (use ValidationUtils.isValidPercentage)
-        return false;
+        return ValidationUtils.isValidPercentage(minPaymentPercentage);
     }
 }

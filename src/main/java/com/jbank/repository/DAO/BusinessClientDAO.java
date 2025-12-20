@@ -214,12 +214,21 @@ public class BusinessClientDAO implements DAOinterface<BusinessClientEntity> {
     // Delete by ID
     @Override
     public boolean deleteByID(Integer id) throws SQLException {
+        // First, delete from client_accounts junction table (which cascades to delete accounts and their subtypes)
+        String junctionSql = "DELETE FROM client_accounts WHERE customer_id = ?";
+        try(PreparedStatement junctionStmt = connection.prepareStatement(junctionSql)){
+            junctionStmt.setInt(1, id);
+            junctionStmt.executeUpdate();
+        }
+
+        // Then delete from business_clients
         String businessSql = "DELETE FROM business_clients WHERE customer_id = ?";
         try(PreparedStatement businessStmt = connection.prepareStatement(businessSql)){
             businessStmt.setInt(1, id);
             businessStmt.executeUpdate();
         }
 
+        // Finally delete from clients
         String clientSql = "DELETE FROM clients WHERE customer_id = ?";
         try(PreparedStatement clientStmt = connection.prepareStatement(clientSql)){
             clientStmt.setInt(1, id);

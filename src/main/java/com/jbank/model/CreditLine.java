@@ -25,7 +25,7 @@ public class CreditLine extends AbstractAccount {
 
         this.creditLimit = creditLimit;
         this.interestRate = interestRate;
-        this.minPaymentPercentage = minPaymentPercentage;
+        this.minPaymentPercentage = minPaymentPercentage / 100; // Store as decimal
     }
 
     // Mutators

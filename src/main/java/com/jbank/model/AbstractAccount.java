@@ -37,8 +37,9 @@ public class AbstractAccount {
         this.accountID = newID;
     }
     // Protected setter for balance to be used by subclasses
+    // Rounds to 2 decimal places to prevent floating-point precision issues
     protected void setBalance(double newBalance) {
-        this.balance = newBalance;
+        this.balance = Math.round(newBalance * 100.0) / 100.0;
     }
 
     // Getters

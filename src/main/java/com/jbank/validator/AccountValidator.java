@@ -11,26 +11,24 @@ public class AccountValidator {
     }
     
     /**
-     * Validates account balance.
+     * Validates account balance (non-negative dollar amount).
      */
     public static boolean isValidBalance(double balance) {
-        // TODO: Implement (use ValidationUtils)
-        return false;
+        return ValidationUtils.isNonNegative(balance) && ValidationUtils.isValidDollarAmount(balance);
     }
     
     /**
-     * Validates account ID.
+     * Validates account ID (positive integer or 0 for placeholder before DB assignment).
+     * Account ID can be 0 as a temporary placeholder before the database generates the real ID.
      */
     public static boolean isValidAccountId(Integer accountId) {
-        // TODO: Implement (use ValidationUtils.isValidId)
-        return false;
+        return accountId != null && accountId >= 0;
     }
     
     /**
-     * Validates client ID.
+     * Validates client ID (positive integer).
      */
     public static boolean isValidClientId(Integer clientId) {
-        // TODO: Implement (use ValidationUtils.isValidId)
-        return false;
+        return ValidationUtils.isValidId(clientId);
     }
 }

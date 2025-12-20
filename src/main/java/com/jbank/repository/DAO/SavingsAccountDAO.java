@@ -15,6 +15,7 @@ import com.jbank.util.ConnectionHandler;
 /**
  * Data Access Object for SavingsAccount operations.
  * Handles database CRUD operations for savings_accounts table.
+ * Manages both accounts and savings_accounts tables (parent-child relationship).
  * 
  * @author juanf
  */
@@ -25,48 +26,140 @@ public class SavingsAccountDAO implements DAOinterface<SavingsAccountEntity> {
     // Create
     @Override
     public Integer create(SavingsAccountEntity savingsAccountEntity) throws SQLException {
-        // TODO: Insert into accounts table first (account_type = 'SAVINGS')
-        // TODO: Then insert into savings_accounts table
-        // TODO: Return generated account_id
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            // First, insert into accounts table
+            String accountSql = "INSERT INTO accounts (account_type, account_name, balance) VALUES (?, ?, ?)";
+            try (PreparedStatement accountStmt = connection.prepareStatement(accountSql, Statement.RETURN_GENERATED_KEYS)) {
+                accountStmt.setString(1, "SAVINGS");
+                accountStmt.setString(2, "Savings Account");
+                accountStmt.setDouble(3, savingsAccountEntity.getBalance());
+                accountStmt.executeUpdate();
+                
+                // Get the generated account_id
+                int accountId;
+                try (ResultSet rs = accountStmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        accountId = rs.getInt(1);
+                    } else {
+                        throw new SQLException("Failed to insert into accounts table");
+                    }
+                }
+                
+                // Now insert into savings_accounts table
+                String savingsSql = "INSERT INTO savings_accounts (account_id, interest_rate, withdrawal_limit, withdrawal_counter) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement savingsStmt = connection.prepareStatement(savingsSql)) {
+                    savingsStmt.setInt(1, accountId);
+                    savingsStmt.setDouble(2, savingsAccountEntity.getInterestRate());
+                    savingsStmt.setInt(3, savingsAccountEntity.getWithdrawalLimit());
+                    savingsStmt.setInt(4, 0); // Start with 0 withdrawals
+                    savingsStmt.executeUpdate();
+                }
+                
+                return accountId;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error creating SavingsAccount: " + e.getMessage());
+            return null;
+        }
     }
 
     // Read by ID
     @Override
     public Optional<SavingsAccountEntity> getByID(Integer id) throws SQLException {
-        // TODO: JOIN accounts and savings_accounts tables on account_id
-        // TODO: Return Optional.empty() if not found
-        throw new UnsupportedOperationException("Not supported yet.");
+        String sql = "SELECT a.account_id, a.balance, sa.interest_rate, sa.withdrawal_limit, sa.withdrawal_counter " +
+                     "FROM accounts a " +
+                     "JOIN savings_accounts sa ON a.account_id = sa.account_id " +
+                     "WHERE a.account_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    SavingsAccountEntity account = new SavingsAccountEntity(
+                        rs.getInt("account_id"),
+                        0,
+                        rs.getDouble("balance"),
+                        rs.getDouble("interest_rate"),
+                        rs.getInt("withdrawal_limit"),
+                        rs.getInt("withdrawal_counter")
+                    );
+                    return Optional.of(account);
+                } else {
+                    return Optional.empty();
+                }
+            }
+        }
     }
 
     // Read all
     @Override
     public List<SavingsAccountEntity> getAll() throws SQLException {
-        // TODO: JOIN accounts and savings_accounts tables
-        // TODO: Return all savings accounts as a list
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<SavingsAccountEntity> accounts = new ArrayList<>();
+        String sql = "SELECT a.account_id, a.balance, sa.interest_rate, sa.withdrawal_limit, sa.withdrawal_counter " +
+                     "FROM accounts a " +
+                     "JOIN savings_accounts sa ON a.account_id = sa.account_id";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                SavingsAccountEntity account = new SavingsAccountEntity(
+                    rs.getInt("account_id"),
+                    0,
+                    rs.getDouble("balance"),
+                    rs.getDouble("interest_rate"),
+                    rs.getInt("withdrawal_limit"),
+                    rs.getInt("withdrawal_counter")
+                );
+                accounts.add(account);
+            }
+        }
+        return accounts;
     }
 
-    // Update
+    // Update by ID
     @Override
     public SavingsAccountEntity updateByID(SavingsAccountEntity savingsAccountEntity) throws SQLException {
-        // TODO: Update both accounts and savings_accounts tables
-        // TODO: Return the updated entity or null if not found
-        throw new UnsupportedOperationException("Not supported yet.");
+        String accountSql = "UPDATE accounts SET balance = ? WHERE account_id = ?";
+        try (PreparedStatement accountStmt = connection.prepareStatement(accountSql)) {
+            accountStmt.setDouble(1, savingsAccountEntity.getBalance());
+            accountStmt.setInt(2, savingsAccountEntity.getAccountID());
+            accountStmt.executeUpdate();
+        }
+        
+        String savingsSql = "UPDATE savings_accounts SET interest_rate = ?, withdrawal_limit = ?, withdrawal_counter = ? WHERE account_id = ?";
+        try (PreparedStatement savingsStmt = connection.prepareStatement(savingsSql)) {
+            savingsStmt.setDouble(1, savingsAccountEntity.getInterestRate());
+            savingsStmt.setInt(2, savingsAccountEntity.getWithdrawalLimit());
+            savingsStmt.setInt(3, savingsAccountEntity.getWithdrawalCounter());
+            savingsStmt.setInt(4, savingsAccountEntity.getAccountID());
+            savingsStmt.executeUpdate();
+        }
+        
+        return savingsAccountEntity;
     }
 
-    // Delete
+    // Delete by ID
     @Override
     public boolean deleteByID(Integer id) throws SQLException {
-        // TODO: Delete from savings_accounts first (child table)
-        // TODO: Then delete from accounts (parent table)
-        // TODO: Return true if successful, false otherwise
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    // Additional helper methods
-    public List<SavingsAccountEntity> getByCustomerID(Integer customerID) throws SQLException {
-        // TODO: Find all savings accounts for a specific customer
-        throw new UnsupportedOperationException("Not supported yet.");
+        // First delete from client_accounts junction table
+        String junctionSql = "DELETE FROM client_accounts WHERE account_id = ?";
+        try (PreparedStatement junctionStmt = connection.prepareStatement(junctionSql)) {
+            junctionStmt.setInt(1, id);
+            junctionStmt.executeUpdate();
+        }
+        
+        // Then delete from savings_accounts (child table)
+        String savingsSql = "DELETE FROM savings_accounts WHERE account_id = ?";
+        try (PreparedStatement savingsStmt = connection.prepareStatement(savingsSql)) {
+            savingsStmt.setInt(1, id);
+            savingsStmt.executeUpdate();
+        }
+        
+        // Finally delete from accounts (parent table)
+        String accountSql = "DELETE FROM accounts WHERE account_id = ?";
+        try (PreparedStatement accountStmt = connection.prepareStatement(accountSql)) {
+            accountStmt.setInt(1, id);
+            int rowsAffected = accountStmt.executeUpdate();
+            return rowsAffected > 0;
+        }
     }
 }

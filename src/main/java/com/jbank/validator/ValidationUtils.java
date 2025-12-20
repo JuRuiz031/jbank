@@ -72,4 +72,15 @@ public class ValidationUtils {
     public static String formatCurrency(double amount) {
         return String.format("%,.2f", amount);
     }
+
+    // Rounds a double to exactly 2 decimal places for currency operations
+    // This prevents floating-point precision issues (e.g., 100.10 - 50.05 = 50.04999...)
+    public static double roundToTwoDecimals(double amount) {
+        return Math.round(amount * 100.0) / 100.0;
+    }
+
+    // Checks if a balance is effectively zero (within floating-point tolerance)
+    public static boolean isEffectivelyZero(double balance) {
+        return Math.abs(balance) < 0.005; // Less than half a cent
+    }
 }

@@ -1,8 +1,5 @@
 package com.jbank.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author juanfruiz
@@ -14,8 +11,6 @@ public abstract class AbstractClient {
     private String address;
     private String name;
 
-    // ArrayList of accounts belonging to this customer
-    private List<AbstractAccount> accounts = new ArrayList<>();
 
     // Constructor
     protected AbstractClient(int customerID, String phoneNumber, String address, String name) {
