@@ -10,9 +10,8 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * Unit tests for BusinessClient 
- * */
-
+ * Unit tests for BusinessClient
+ */
 public class BusinessClientTest {
     
     private BusinessClient testClient;

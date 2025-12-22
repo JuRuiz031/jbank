@@ -25,8 +25,7 @@ import com.jbank.repository.DAO.CreditLineDAO;
 import com.jbank.repository.entities.CreditLineEntity;
 
 /**
- * Unit tests for CreditLineService
- * Tests CRUD operations, validation, business logic, and rollback behavior
+ * Unit tests for CreditLineService - CRUD operations, validation, business logic, rollback behavior
  * 
  * @author juanf
  */
@@ -70,8 +69,7 @@ public class CreditLineServiceTest {
         );
     }
 
-    // ===== Create Tests =====
-
+    // Create Tests
     @Test
     public void testCreate_HappyPath_CreatesAccountAndAssignsToClient() throws Exception {
         when(creditLineDAO.create(any())).thenReturn(testAccountId);

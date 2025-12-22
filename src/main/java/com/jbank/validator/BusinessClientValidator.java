@@ -22,67 +22,48 @@ public class BusinessClientValidator {
         // Prevent instantiation
     }
     
-    /**
-     * Validates EIN (Employer Identification Number).
-     * Must be exactly 9 digits (like Tax ID).
-     */
+    // Validates EIN (Employer Identification Number) - must be exactly 9 digits
     public static boolean isValidEIN(String ein) {
         return ClientValidator.isValidTaxID(ein);
     }
     
-    /**
-     * Validates business type.
-     */
+    // Validates business type
     public static boolean isValidBusinessType(String businessType) {
         return businessType != null && VALID_BUSINESS_TYPES.contains(businessType);
     }
     
-    /**
-     * Validates contact person name.
-     */
+    // Validates contact person name (3-50 characters)
     public static boolean isValidContactName(String contactName) {
         return contactName != null && !contactName.trim().isEmpty() 
                && contactName.length() >= 3 && contactName.length() <= 50;
     }
     
-    /**
-     * Validates contact person title.
-     */
+    // Validates contact person title
     public static boolean isValidContactTitle(String contactTitle) {
         return contactTitle != null && VALID_TITLES.contains(contactTitle);
     }
     
-    /**
-     * Validates total asset value.
-     */
+    // Validates total asset value (non-negative)
     public static boolean isValidTotalAssetValue(double totalAssetValue) {
         return totalAssetValue >= 0;
     }
     
-    /**
-     * Validates annual revenue.
-     */
+    // Validates annual revenue (non-negative)
     public static boolean isValidAnnualRevenue(double annualRevenue) {
         return annualRevenue >= 0;
     }
     
-    /**
-     * Validates annual profit (can be negative).
-     */
+    // Validates annual profit (can be negative)
     public static boolean isValidAnnualProfit(double annualProfit) {
         return true; // No restrictions, profit can be negative
     }
     
-    /**
-     * Get valid business types for display.
-     */
+    // Returns valid business types for display
     public static Set<String> getValidBusinessTypes() {
         return VALID_BUSINESS_TYPES;
     }
     
-    /**
-     * Get valid contact titles for display.
-     */
+    // Returns valid contact titles for display
     public static Set<String> getValidContactTitles() {
         return VALID_TITLES;
     }

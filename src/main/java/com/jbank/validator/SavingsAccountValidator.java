@@ -12,10 +12,7 @@ public class SavingsAccountValidator {
         // Prevent instantiation
     }
     
-    /**
-     * Validates a SavingsAccount model.
-     * Returns true if all fields are valid, false otherwise.
-     */
+    // Validates a SavingsAccount model, returns true if all fields are valid
     public static boolean validate(SavingsAccount account) {
         return account != null &&
                AccountValidator.isValidClientId(account.getCustomerID()) &&
@@ -25,16 +22,12 @@ public class SavingsAccountValidator {
                isValidWithdrawalLimit(account.getWithdrawalLimit());
     }
     
-    /**
-     * Validates interest rate (percentage between 0 and 100).
-     */
+    // Validates interest rate (percentage between 0 and 100)
     public static boolean isValidInterestRate(double interestRate) {
         return ValidationUtils.isValidPercentage(interestRate);
     }
     
-    /**
-     * Validates withdrawal limit (positive integer).
-     */
+    // Validates withdrawal limit (must be positive integer)
     public static boolean isValidWithdrawalLimit(int withdrawalLimit) {
         return withdrawalLimit > 0;
     }

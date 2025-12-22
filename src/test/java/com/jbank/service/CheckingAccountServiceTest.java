@@ -25,8 +25,7 @@ import com.jbank.repository.DAO.ClientAccountDAO;
 import com.jbank.repository.entities.CheckingAccountEntity;
 
 /**
- * Unit tests for CheckingAccountService
- * Tests CRUD operations, validation, business logic, and rollback behavior
+ * Unit tests for CheckingAccountService - CRUD operations, validation, business logic, rollback behavior
  * 
  * @author juanf
  */
@@ -67,8 +66,7 @@ public class CheckingAccountServiceTest {
         );
     }
 
-    // ===== Create Tests =====
-
+    // Create Tests
     @Test
     public void testCreate_HappyPath_CreatesAccountAndAssignsToClient() throws Exception {
         when(checkingAccountDAO.create(any())).thenReturn(testAccountId);
@@ -124,8 +122,7 @@ public class CheckingAccountServiceTest {
         verify(clientAccountDAO, never()).assignAccountToClient(anyInt(), anyInt(), anyString());
     }
 
-    // ===== Read Tests =====
-
+    // Read Tests
     @Test
     public void testGetById_AccountExists_ReturnsAccount() throws Exception {
         when(checkingAccountDAO.getByID(testAccountId)).thenReturn(Optional.of(validEntity));

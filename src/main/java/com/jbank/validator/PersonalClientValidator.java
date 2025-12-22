@@ -2,14 +2,13 @@ package com.jbank.validator;
 
 import com.jbank.model.PersonalClient;
 
-// Validator for PersonalClient-specific fields.
 public class PersonalClientValidator {
     
     private PersonalClientValidator() {
         // Prevent instantiation
     }
     
-    // Validates a PersonalClient Model
+    // Validates a PersonalClient model with all required fields
     public static boolean validate(PersonalClient model) {
         return ClientValidator.isValidName(model.getName()) &&
                ClientValidator.isValidAddress(model.getAddress()) &&
@@ -20,17 +19,17 @@ public class PersonalClientValidator {
                isValidTotalDebt(model.getTotalDebt());
     }
 
-    // Validates credit score (300-850)
+    // Validates credit score (between 300 and 850)
     public static boolean isValidCreditScore(int creditScore) {
         return creditScore >= 300 && creditScore <= 850;
     }
 
-    // Validates yearly income (must be positive)
+    // Validates yearly income (must be positive dollar amount)
     public static boolean isValidYearlyIncome(double yearlyIncome) {
         return ValidationUtils.isPositive(yearlyIncome) && ValidationUtils.isValidDollarAmount(yearlyIncome);
     }
 
-    // Validates total debt (non-negative)
+    // Validates total debt (non-negative dollar amount)
     public static boolean isValidTotalDebt(double totalDebt) {
         return ValidationUtils.isNonNegative(totalDebt) && ValidationUtils.isValidDollarAmount(totalDebt);
     }

@@ -1,7 +1,6 @@
 package com.jbank;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
 /**
@@ -9,9 +8,7 @@ import org.junit.jupiter.api.Test;
  */
 public class AppTest {
 
-    /**
-     * Rigorous Test :-)
-     */
+    // Rigorous test
     @Test
     public void shouldAnswerWithTrue() {
         assertTrue(true);

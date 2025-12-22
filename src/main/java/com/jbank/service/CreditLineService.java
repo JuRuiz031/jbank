@@ -35,9 +35,7 @@ public class CreditLineService {
         this.clientAccountDAO = clientAccountDAO;
     }
 
-    /**
-     * Create a new credit line and assign it to a client as PRIMARY owner.
-     */
+    // Create a new credit line and assign it to a client as PRIMARY owner
     public Integer create(CreditLine model, int clientId) {
         try {
             // Validate the account model
@@ -70,9 +68,7 @@ public class CreditLineService {
         }
     }
 
-    /**
-     * Get credit line by ID.
-     */
+    // Get credit line by ID
     public Optional<CreditLine> getById(Integer id) {
         try {
             Optional<CreditLineEntity> entityOpt = creditLineDAO.getByID(id);
@@ -87,9 +83,7 @@ public class CreditLineService {
         }
     }
 
-    /**
-     * Get all credit lines.
-     */
+    // Get all credit lines
     public List<CreditLine> getAll() {
         try {
             List<CreditLineEntity> entities = creditLineDAO.getAll();
@@ -104,9 +98,7 @@ public class CreditLineService {
         }
     }
 
-    /**
-     * Update credit line.
-     */
+    // Update credit line
     public CreditLine update(Integer id, CreditLine model) {
         try {
             // Validate the account model
@@ -129,9 +121,7 @@ public class CreditLineService {
         }
     }
 
-    /**
-     * Delete credit line.
-     */
+    // Delete credit line
     public boolean delete(Integer id) {
         try {
             // Remove all client-account relationships first
@@ -143,10 +133,7 @@ public class CreditLineService {
         }
     }
 
-    /**
-     * Charge the credit line (increase balance owed).
-     * Updates balance and verifies it doesn't exceed credit limit.
-     */
+    // Charge the credit line (increase balance owed), updates balance and verifies it doesn't exceed credit limit
     public boolean chargeCredit(CreditLine account, double chargeAmount) {
         try {
             if (chargeAmount <= 0) {
@@ -181,10 +168,7 @@ public class CreditLineService {
         }
     }
 
-    /**
-     * Make a payment on the credit line.
-     * Reduces balance and applies interest on remaining balance.
-     */
+    // Make a payment on the credit line, reduces balance and applies interest on remaining balance
     public boolean makePayment(CreditLine account, double paymentAmount) {
         try {
             account.makePayment(paymentAmount);
@@ -216,18 +200,12 @@ public class CreditLineService {
         }
     }
 
-    /**
-     * Calculate minimum payment required (percentage of balance).
-     */
+    // Calculate minimum payment required (percentage of balance)
     public double calculateMinimumPayment(CreditLine account) {
         return account.getBalance() * (account.getMinPaymentPercentage() / 100.0);
     }
 
-    /**
-     * Increase credit limit based on payment history.
-     * Assumes at least 12 on-time payments before increasing.
-     * Currently increases limit by 10%.
-     */
+    // Increase credit limit based on payment history (assumes 12+ on-time payments, increases by 10%)
     public boolean increaseCreditLimit(CreditLine account) {
         try {
             double newLimit = account.getCreditLimit() * 1.10; // 10% increase

@@ -228,11 +228,19 @@ public class BusinessClientController {
         String confirmation = InputHandler.getStringInput("Type 'yes' to confirm or anything else to cancel: ");
         
         if (confirmation.equalsIgnoreCase("yes")) {
-            boolean deleted = businessClientService.delete(client.getCustomerID());
-            if (deleted) {
-                System.out.println("Business account deleted successfully. Returning to main menu...");
-            } else {
-                System.out.println("Failed to delete business account. Please try again or contact support.");
+            try {
+                boolean deleted = businessClientService.delete(client.getCustomerID());
+                if (deleted) {
+                    System.out.println("Business account deleted successfully. Returning to main menu...");
+                } else {
+                    System.out.println("Failed to delete business account. Please try again or contact support.");
+                }
+            } catch (com.jbank.util.AccountDeletionException e) {
+                System.out.println("\nCannot delete business account due to outstanding balances:");
+                System.out.println(e.getAccountDetails());
+                System.out.println("\nPlease resolve the following before deleting your business account:");
+                System.out.println("- Withdraw all funds from Checking and Savings accounts");
+                System.out.println("- Pay off your Credit Line balance");
             }
         } else {
             System.out.println("Deletion cancelled.");

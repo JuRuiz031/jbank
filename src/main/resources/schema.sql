@@ -69,13 +69,15 @@ CREATE TABLE credit_lines (
 );
 
 -- Junction table for many-to-many relationship (could support joint accounts in future iterations)
+-- Note: ON DELETE RESTRICT for accounts ensures accounts are not deleted via CASCADE
+-- Accounts must be explicitly validated and deleted through the service layer
 CREATE TABLE client_accounts (
     customer_id INT NOT NULL,
     account_id INT NOT NULL,
     ownership_type VARCHAR(20) NOT NULL DEFAULT 'PRIMARY' CHECK (ownership_type IN ('PRIMARY', 'JOINT')),
     PRIMARY KEY (customer_id, account_id),
     FOREIGN KEY (customer_id) REFERENCES clients(customer_id) ON DELETE CASCADE,
-    FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE RESTRICT
 );
 
 -- Possible future indexes for better performance? (Not needed for this scale but good to know)

@@ -21,12 +21,12 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.jbank.model.PersonalClient;
+import com.jbank.repository.DAO.ClientAccountDAO;
 import com.jbank.repository.DAO.PersonalClientDAO;
 import com.jbank.repository.entities.PersonalClientEntity;
 
 /**
- * Unit tests for PersonalClientService
- * Conversion tests, business logic tests
+ * Unit tests for PersonalClientService - conversion tests, business logic tests
  * 
  * @author juanf
  */
@@ -38,6 +38,8 @@ public class PersonalClientServiceTest {
     private PersonalClientService service;
     @Mock
     private PersonalClientDAO personalClientDAO;
+    @Mock
+    private ClientAccountDAO clientAccountDAO;
     
     private PersonalClient validClient;
     private PersonalClientEntity validEntity;
@@ -68,8 +70,7 @@ public class PersonalClientServiceTest {
         );
     }
 
-    // ===== Model to Entity Conversion Tests =====
-
+    // Model to Entity Conversion Tests
     @Test
     public void testConvertModelToEntity_HappyPath() {
         Optional<PersonalClientEntity> result = service.convertModelToEntity(validClient);
@@ -248,7 +249,40 @@ public class PersonalClientServiceTest {
     }
 
     @Test
-    public void testDelete_HappyPath() throws Exception {
+    public void testDelete_HappyPath_NoAccounts() throws Exception {
+        // Client has no accounts
+        java.util.Map<Integer, String> emptyAccounts = new java.util.HashMap<>();
+        when(clientAccountDAO.getAccountsByClient(1)).thenReturn(emptyAccounts);
+        when(personalClientDAO.deleteByID(1)).thenReturn(true);
+
+        boolean result = service.delete(1);
+
+        assertTrue(result);
+        verify(personalClientDAO).deleteByID(1);
+    }
+
+    @Test
+    public void testDelete_HappyPath_SoleOwnerOfAccount() throws Exception {
+        // Client is sole owner of one account
+        java.util.Map<Integer, String> accounts = new java.util.HashMap<>();
+        accounts.put(101, "PRIMARY");
+        when(clientAccountDAO.getAccountsByClient(1)).thenReturn(accounts);
+        when(clientAccountDAO.isJointAccount(101)).thenReturn(false);
+        when(personalClientDAO.deleteByID(1)).thenReturn(true);
+
+        boolean result = service.delete(1);
+
+        assertTrue(result);
+        verify(personalClientDAO).deleteByID(1);
+    }
+
+    @Test
+    public void testDelete_HappyPath_JointAccount() throws Exception {
+        // Client owns a joint account (should NOT delete the account)
+        java.util.Map<Integer, String> accounts = new java.util.HashMap<>();
+        accounts.put(102, "JOINT");
+        when(clientAccountDAO.getAccountsByClient(1)).thenReturn(accounts);
+        when(clientAccountDAO.isJointAccount(102)).thenReturn(true);
         when(personalClientDAO.deleteByID(1)).thenReturn(true);
 
         boolean result = service.delete(1);
@@ -259,6 +293,8 @@ public class PersonalClientServiceTest {
 
     @Test
     public void testDelete_NotFound() throws Exception {
+        java.util.Map<Integer, String> emptyAccounts = new java.util.HashMap<>();
+        when(clientAccountDAO.getAccountsByClient(99)).thenReturn(emptyAccounts);
         when(personalClientDAO.deleteByID(99)).thenReturn(false);
 
         boolean result = service.delete(99);

@@ -1,17 +1,15 @@
 package com.jbank.validator;
 
 /**
- *
  * @author juanf
  */
-// Validator for client-specific fields.
 public class ClientValidator {
     
     private ClientValidator() {
         // Prevent instantiation
     }
 
-    // Sanitizes string for number validation
+    // Sanitizes string by removing non-digit characters
     private static String stripNonDigits(String value) {
         StringBuilder sb = new StringBuilder();
         for (char c : value.toCharArray()) {
@@ -22,13 +20,13 @@ public class ClientValidator {
         return sb.toString();
     }
     
-    // Helper method: checks if string contains only digits and allowed separators
+    // Checks if string contains only digits and allowed separators
     private static boolean containsOnlyDigitsAndSeparators(String value, String allowedChars) {
         String pattern = "[0-9" + allowedChars + "]*";
         return value.matches(pattern);
     }
     
-    // Validates client name
+    // Validates client name (3-50 characters, letters/spaces/hyphens/apostrophes)
     public static boolean isValidName(String name) {
         return ValidationUtils.isValidString(name) &&
                name.matches("^[a-zA-Z .'-]+$") &&
@@ -36,14 +34,14 @@ public class ClientValidator {
                name.length() <= 50;
     }
     
-    // Validates client address
+    // Validates client address (max 200 characters, alphanumeric and basic symbols)
     public static boolean isValidAddress(String address) {
         return ValidationUtils.isValidString(address) &&
                address.matches("^[a-zA-Z0-9 ,.'\\-#]+$") &&
                address.length() <= 200;
     }
     
-    // Validates client phone number
+    // Validates client phone number (must be exactly 10 digits)
     public static boolean isValidPhone(String phone) {
         if (!ValidationUtils.isValidString(phone) || !containsOnlyDigitsAndSeparators(phone, "\\.\\-\\() ")) {
             return false;
@@ -52,8 +50,7 @@ public class ClientValidator {
         return digits.length() == 10;
     }
     
-    // Validates tax ID (SSN, ITIN, or EIN - all 9 digits with optional hyphens/spaces).
-    // Accepts formats like: 123456789, 123-45-6789, 123 45 6789, 12-3456789, etc.
+    // Validates tax ID - 9 digits with optional hyphens/spaces (SSN, ITIN, or EIN)
     public static boolean isValidTaxID(String taxID) {
         if (!ValidationUtils.isValidString(taxID) || !containsOnlyDigitsAndSeparators(taxID, "\\- ")) {
             return false;

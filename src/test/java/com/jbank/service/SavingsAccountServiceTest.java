@@ -25,8 +25,7 @@ import com.jbank.repository.DAO.SavingsAccountDAO;
 import com.jbank.repository.entities.SavingsAccountEntity;
 
 /**
- * Unit tests for SavingsAccountService
- * Tests CRUD operations, validation, business logic, and rollback behavior
+ * Unit tests for SavingsAccountService - CRUD operations, validation, business logic, rollback behavior
  * 
  * @author juanf
  */
@@ -68,8 +67,7 @@ public class SavingsAccountServiceTest {
         );
     }
 
-    // ===== Create Tests =====
-
+    // Create Tests
     @Test
     public void testCreate_HappyPath_CreatesAccountAndAssignsToClient() throws Exception {
         when(savingsAccountDAO.create(any())).thenReturn(testAccountId);

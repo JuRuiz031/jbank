@@ -12,10 +12,7 @@ public class CheckingAccountValidator {
         // Prevent instantiation
     }
     
-    /**
-     * Validates a CheckingAccount model.
-     * Returns true if all fields are valid, false otherwise.
-     */
+    // Validates a CheckingAccount model, returns true if all fields are valid
     public static boolean validate(CheckingAccount account) {
         return account != null &&
                AccountValidator.isValidClientId(account.getCustomerID()) &&
@@ -24,9 +21,7 @@ public class CheckingAccountValidator {
                isValidOverdraftFee(account.getOverdraftFee());
     }
     
-    /**
-     * Validates overdraft fee (non-negative dollar amount).
-     */
+    // Validates overdraft fee (non-negative dollar amount)
     public static boolean isValidOverdraftFee(double overdraftFee) {
         return ValidationUtils.isNonNegative(overdraftFee) && ValidationUtils.isValidDollarAmount(overdraftFee);
     }

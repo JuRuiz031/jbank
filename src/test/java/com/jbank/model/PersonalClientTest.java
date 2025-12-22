@@ -11,7 +11,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 /**
  * Unit tests for PersonalClient
  */
-
 public class PersonalClientTest {
     
     private PersonalClient testClient;

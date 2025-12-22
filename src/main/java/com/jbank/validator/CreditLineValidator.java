@@ -12,10 +12,7 @@ public class CreditLineValidator {
         // Prevent instantiation
     }
     
-    /**
-     * Validates a CreditLine model.
-     * Returns true if all fields are valid, false otherwise.
-     */
+    // Validates a CreditLine model, returns true if all fields are valid
     public static boolean validate(CreditLine account) {
         return account != null &&
                AccountValidator.isValidClientId(account.getCustomerID()) &&
@@ -26,23 +23,17 @@ public class CreditLineValidator {
                isValidMinPaymentPercentage(account.getMinPaymentPercentage());
     }
     
-    /**
-     * Validates credit limit (positive dollar amount).
-     */
+    // Validates credit limit (positive dollar amount)
     public static boolean isValidCreditLimit(double creditLimit) {
         return ValidationUtils.isPositive(creditLimit) && ValidationUtils.isValidDollarAmount(creditLimit);
     }
     
-    /**
-     * Validates interest rate (percentage between 0 and 100).
-     */
+    // Validates interest rate (percentage between 0 and 100)
     public static boolean isValidInterestRate(double interestRate) {
         return ValidationUtils.isValidPercentage(interestRate);
     }
     
-    /**
-     * Validates minimum payment percentage (percentage between 0 and 100).
-     */
+    // Validates minimum payment percentage (percentage between 0 and 100)
     public static boolean isValidMinPaymentPercentage(double minPaymentPercentage) {
         return ValidationUtils.isValidPercentage(minPaymentPercentage);
     }

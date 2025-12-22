@@ -35,9 +35,7 @@ public class SavingsAccountService {
         this.clientAccountDAO = clientAccountDAO;
     }
 
-    /**
-     * Create a new savings account and assign it to a client as PRIMARY owner.
-     */
+    // Create a new savings account and assign it to a client as PRIMARY owner
     public Integer create(SavingsAccount model, int clientId) {
         try {
             // Validate the account model
@@ -70,9 +68,7 @@ public class SavingsAccountService {
         }
     }
 
-    /**
-     * Get savings account by ID.
-     */
+    // Get savings account by ID
     public Optional<SavingsAccount> getById(Integer id) {
         try {
             Optional<SavingsAccountEntity> entityOpt = savingsAccountDAO.getByID(id);
@@ -87,9 +83,7 @@ public class SavingsAccountService {
         }
     }
 
-    /**
-     * Get all savings accounts.
-     */
+    // Get all savings accounts
     public List<SavingsAccount> getAll() {
         try {
             List<SavingsAccountEntity> entities = savingsAccountDAO.getAll();
@@ -104,9 +98,7 @@ public class SavingsAccountService {
         }
     }
 
-    /**
-     * Update savings account.
-     */
+    // Update savings account
     public SavingsAccount update(Integer id, SavingsAccount model) {
         try {
             // Validate the account model
@@ -129,9 +121,7 @@ public class SavingsAccountService {
         }
     }
 
-    /**
-     * Delete savings account.
-     */
+    // Delete savings account
     public boolean delete(Integer id) {
         try {
             // Remove all client-account relationships first
@@ -143,10 +133,7 @@ public class SavingsAccountService {
         }
     }
 
-    /**
-     * Deposit funds into savings account.
-     * Updates balance in both model and database.
-     */
+    // Deposit funds into savings account, updates balance in both model and database
     public boolean deposit(SavingsAccount account, double depositAmount) {
         try {
             account.deposit(depositAmount);
@@ -171,11 +158,7 @@ public class SavingsAccountService {
         }
     }
 
-    /**
-     * Withdraw funds from savings account.
-     * Checks withdrawal limit (6 per month) and increments counter.
-     * Updates balance in both model and database.
-     */
+    // Withdraw funds from savings account, checks withdrawal limit (6 per month) and increments counter
     public boolean withdraw(SavingsAccount account, double withdrawAmount) {
         try {
             account.withdraw(withdrawAmount);

@@ -34,9 +34,7 @@ public class CheckingAccountService {
         this.clientAccountDAO = clientAccountDAO;
     }
 
-    /**
-     * Create a new checking account and assign it to a client as PRIMARY owner.
-     */
+    // Create a new checking account and assign it to a client as PRIMARY owner
     public Integer create(CheckingAccount model, int clientId) {
         try {
             // Validate the account model
@@ -69,9 +67,7 @@ public class CheckingAccountService {
         }
     }
 
-    /**
-     * Get checking account by ID.
-     */
+    // Get checking account by ID
     public Optional<CheckingAccount> getById(Integer id) {
         try {
             Optional<CheckingAccountEntity> entityOpt = checkingAccountDAO.getByID(id);
@@ -86,9 +82,7 @@ public class CheckingAccountService {
         }
     }
 
-    /**
-     * Get all checking accounts.
-     */
+    // Get all checking accounts
     public List<CheckingAccount> getAll() {
         try {
             List<CheckingAccountEntity> entities = checkingAccountDAO.getAll();
@@ -103,9 +97,7 @@ public class CheckingAccountService {
         }
     }
 
-    /**
-     * Update checking account.
-     */
+    // Update checking account
     public CheckingAccount update(Integer id, CheckingAccount model) {
         try {
             // Validate the account model
@@ -128,9 +120,7 @@ public class CheckingAccountService {
         }
     }
 
-    /**
-     * Delete checking account.
-     */
+    // Delete checking account
     public boolean delete(Integer id) {
         try {
             // Remove all client-account relationships first
@@ -142,10 +132,7 @@ public class CheckingAccountService {
         }
     }
 
-    /**
-     * Deposit funds into checking account.
-     * Updates balance in both model and database.
-     */
+    // Deposit funds into checking account, updates balance in both model and database
     public boolean deposit(CheckingAccount account, double depositAmount) {
         try {
             account.deposit(depositAmount);
@@ -168,11 +155,7 @@ public class CheckingAccountService {
         }
     }
 
-    /**
-     * Withdraw funds from checking account.
-     * Applies overdraft fee if balance goes negative.
-     * Updates balance in both model and database.
-     */
+    // Withdraw funds from checking account, applies overdraft fee if balance goes negative
     public boolean withdraw(CheckingAccount account, double withdrawAmount) {
         try {
             account.withdraw(withdrawAmount);

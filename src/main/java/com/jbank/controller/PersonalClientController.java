@@ -197,12 +197,20 @@ public class PersonalClientController {
         String confirmation = InputHandler.getStringInput("Type 'yes' to confirm or anything else to cancel: ");
         
         if (confirmation.equalsIgnoreCase("yes")) {
-            boolean deleted = personalClientService.delete(client.getCustomerID());
-            if (deleted) {
-                System.out.println("Account deleted successfully. Returning to main menu...");
-                // Exit the session loop by returning from handleLoggedInClient
-            } else {
-                System.out.println("Failed to delete account. Please try again or contact support.");
+            try {
+                boolean deleted = personalClientService.delete(client.getCustomerID());
+                if (deleted) {
+                    System.out.println("Account deleted successfully. Returning to main menu...");
+                    // Exit the session loop by returning from handleLoggedInClient
+                } else {
+                    System.out.println("Failed to delete account. Please try again or contact support.");
+                }
+            } catch (com.jbank.util.AccountDeletionException e) {
+                System.out.println("\nCannot delete account due to outstanding balances:");
+                System.out.println(e.getAccountDetails());
+                System.out.println("\nPlease resolve the following before deleting your account:");
+                System.out.println("- Withdraw all funds from Checking and Savings accounts");
+                System.out.println("- Pay off your Credit Line balance");
             }
         } else {
             System.out.println("Deletion cancelled.");
