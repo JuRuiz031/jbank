@@ -33,9 +33,9 @@ public class App {
                     System.out.println("Thank you for using JBank. Goodbye!");
                     appRunning = false;
                 }
-                }
             }
         }
+    }
 
     private static void createNewCustomer() {
         boolean inMenu = true;
