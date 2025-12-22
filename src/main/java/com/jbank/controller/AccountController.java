@@ -108,8 +108,8 @@ public class AccountController {
                 System.out.println("\n-- Checking Accounts --");
                 for (CheckingAccount acc : checkingAccounts) {
                     String ownership = accountMap.get(acc.getAccountID());
-                    System.out.printf("  Account #%d [%s]: Balance: %s%n", 
-                        acc.getAccountID(), ownership, ValidationUtils.formatCurrency(acc.getBalance()));
+                    System.out.printf("  %s (Account #%d) [%s]: Balance: %s%n", 
+                        acc.getAccountName(), acc.getAccountID(), ownership, ValidationUtils.formatCurrency(acc.getBalance()));
                 }
             }
             
@@ -118,8 +118,8 @@ public class AccountController {
                 System.out.println("\n-- Savings Accounts --");
                 for (SavingsAccount acc : savingsAccounts) {
                     String ownership = accountMap.get(acc.getAccountID());
-                    System.out.printf("  Account #%d [%s]: Balance: %s (%.2f%% APY)%n", 
-                        acc.getAccountID(), ownership, ValidationUtils.formatCurrency(acc.getBalance()), acc.getInterestRate());
+                    System.out.printf("  %s (Account #%d) [%s]: Balance: %s (%.2f%% APY)%n", 
+                        acc.getAccountName(), acc.getAccountID(), ownership, ValidationUtils.formatCurrency(acc.getBalance()), acc.getInterestRate());
                 }
             }
             
@@ -129,8 +129,8 @@ public class AccountController {
                 for (CreditLine acc : creditLines) {
                     String ownership = accountMap.get(acc.getAccountID());
                     double available = acc.getCreditLimit() - acc.getBalance();
-                    System.out.printf("  Account #%d [%s]: Balance: %s | Available: %s | Limit: %s%n", 
-                        acc.getAccountID(), ownership, 
+                    System.out.printf("  %s (Account #%d) [%s]: Balance: %s | Available: %s | Limit: %s%n", 
+                        acc.getAccountName(), acc.getAccountID(), ownership, 
                         ValidationUtils.formatCurrency(acc.getBalance()),
                         ValidationUtils.formatCurrency(available),
                         ValidationUtils.formatCurrency(acc.getCreditLimit()));
@@ -164,8 +164,8 @@ public class AccountController {
             System.out.println("\n== Your Checking Accounts ==");
             for (int i = 0; i < accounts.size(); i++) {
                 CheckingAccount acc = accounts.get(i);
-                System.out.printf("%d. Account #%d - Balance: %s%n", 
-                    i + 1, acc.getAccountID(), ValidationUtils.formatCurrency(acc.getBalance()));
+                System.out.printf("%d. %s (Account #%d) - Balance: %s%n", 
+                    i + 1, acc.getAccountName(), acc.getAccountID(), ValidationUtils.formatCurrency(acc.getBalance()));
             }
             System.out.println((accounts.size() + 1) + ". Back");
             
@@ -324,8 +324,8 @@ public class AccountController {
             System.out.println("\n== Your Savings Accounts ==");
             for (int i = 0; i < accounts.size(); i++) {
                 SavingsAccount acc = accounts.get(i);
-                System.out.printf("%d. Account #%d - Balance: %s (%.2f%% APY)%n", 
-                    i + 1, acc.getAccountID(), ValidationUtils.formatCurrency(acc.getBalance()), acc.getInterestRate());
+                System.out.printf("%d. %s (Account #%d) - Balance: %s (%.2f%% APY)%n", 
+                    i + 1, acc.getAccountName(), acc.getAccountID(), ValidationUtils.formatCurrency(acc.getBalance()), acc.getInterestRate());
             }
             System.out.println((accounts.size() + 1) + ". Back");
             
@@ -501,8 +501,8 @@ public class AccountController {
             for (int i = 0; i < accounts.size(); i++) {
                 CreditLine acc = accounts.get(i);
                 double available = acc.getCreditLimit() - acc.getBalance();
-                System.out.printf("%d. Account #%d - Balance: %s | Available: %s%n", 
-                    i + 1, acc.getAccountID(), 
+                System.out.printf("%d. %s (Account #%d) - Balance: %s | Available: %s%n", 
+                    i + 1, acc.getAccountName(), acc.getAccountID(), 
                     ValidationUtils.formatCurrency(acc.getBalance()),
                     ValidationUtils.formatCurrency(available));
             }

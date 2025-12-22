@@ -15,6 +15,7 @@ public class SavingsAccountEntity {
     private double interestRate;
     private int withdrawalLimit;
     private int withdrawalCounter;
+    private String accountName;
 
     public SavingsAccountEntity() {
     }
@@ -35,6 +36,16 @@ public class SavingsAccountEntity {
         this.interestRate = interestRate;
         this.withdrawalLimit = withdrawalLimit;
         this.withdrawalCounter = withdrawalCounter;
+    }
+
+    public SavingsAccountEntity(int accountID, int customerID, double balance, double interestRate, int withdrawalLimit, int withdrawalCounter, String accountName) {
+        this.accountID = accountID;
+        this.customerID = customerID;
+        this.balance = balance;
+        this.interestRate = interestRate;
+        this.withdrawalLimit = withdrawalLimit;
+        this.withdrawalCounter = withdrawalCounter;
+        this.accountName = accountName;
     }
 
     // Getters
@@ -62,6 +73,10 @@ public class SavingsAccountEntity {
         return withdrawalCounter;
     }
 
+    public String getAccountName() {
+        return accountName;
+    }
+
     // Setters
     public void setAccountID(int accountID) {
         this.accountID = accountID;
@@ -85,6 +100,10 @@ public class SavingsAccountEntity {
 
     public void setWithdrawalCounter(int withdrawalCounter) {
         this.withdrawalCounter = withdrawalCounter;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     // equals, hashCode, toString

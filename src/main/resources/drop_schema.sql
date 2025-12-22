@@ -1,4 +1,3 @@
--- Active: 1765398826988@@127.0.0.1@5432@jbank@public
 -- Drop schema for JBank
 -- Run this to reset your local development database
 

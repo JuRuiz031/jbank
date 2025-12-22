@@ -1,5 +1,3 @@
--- Active: 1765398826988@@127.0.0.1@5432@jbank@public
-
 -- Schema for JBank Database
 
 -- Base clients table (common fields for all client types)

@@ -31,7 +31,7 @@ public class CreditLineDAO implements DAOinterface<CreditLineEntity> {
             String accountSql = "INSERT INTO accounts (account_type, account_name, balance) VALUES (?, ?, ?)";
             try (PreparedStatement accountStmt = connection.prepareStatement(accountSql, Statement.RETURN_GENERATED_KEYS)) {
                 accountStmt.setString(1, "CREDIT_LINE");
-                accountStmt.setString(2, "Credit Line");
+                accountStmt.setString(2, creditLineEntity.getAccountName());
                 accountStmt.setDouble(3, creditLineEntity.getBalance());
                 accountStmt.executeUpdate();
                 
@@ -66,7 +66,7 @@ public class CreditLineDAO implements DAOinterface<CreditLineEntity> {
     // Read by ID
     @Override
     public Optional<CreditLineEntity> getByID(Integer id) throws SQLException {
-        String sql = "SELECT a.account_id, a.balance, cl.credit_limit, cl.interest_rate, cl.min_payment_percentage " +
+        String sql = "SELECT a.account_id, a.account_name, a.balance, cl.credit_limit, cl.interest_rate, cl.min_payment_percentage " +
                      "FROM accounts a " +
                      "JOIN credit_lines cl ON a.account_id = cl.account_id " +
                      "WHERE a.account_id = ?";
@@ -80,7 +80,8 @@ public class CreditLineDAO implements DAOinterface<CreditLineEntity> {
                         rs.getDouble("balance"),
                         rs.getDouble("credit_limit"),
                         rs.getDouble("interest_rate"),
-                        rs.getDouble("min_payment_percentage")
+                        rs.getDouble("min_payment_percentage"),
+                        rs.getString("account_name")
                     );
                     return Optional.of(creditLine);
                 } else {
@@ -94,7 +95,7 @@ public class CreditLineDAO implements DAOinterface<CreditLineEntity> {
     @Override
     public List<CreditLineEntity> getAll() throws SQLException {
         List<CreditLineEntity> creditLines = new ArrayList<>();
-        String sql = "SELECT a.account_id, a.balance, cl.credit_limit, cl.interest_rate, cl.min_payment_percentage " +
+        String sql = "SELECT a.account_id, a.account_name, a.balance, cl.credit_limit, cl.interest_rate, cl.min_payment_percentage " +
                      "FROM accounts a " +
                      "JOIN credit_lines cl ON a.account_id = cl.account_id";
         
@@ -107,7 +108,8 @@ public class CreditLineDAO implements DAOinterface<CreditLineEntity> {
                     rs.getDouble("balance"),
                     rs.getDouble("credit_limit"),
                     rs.getDouble("interest_rate"),
-                    rs.getDouble("min_payment_percentage")
+                    rs.getDouble("min_payment_percentage"),
+                    rs.getString("account_name")
                 );
                 creditLines.add(creditLine);
             }

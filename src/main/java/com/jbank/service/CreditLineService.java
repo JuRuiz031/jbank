@@ -232,7 +232,7 @@ public class CreditLineService {
                 entity.getCustomerID(),
                 entity.getAccountID(),
                 entity.getBalance(),
-                "Credit Line",
+                entity.getAccountName(),
                 entity.getCreditLimit(),
                 entity.getInterestRate(),
                 entity.getMinPaymentPercentage() // Entity stores as percentage, model constructor expects percentage
@@ -252,7 +252,8 @@ public class CreditLineService {
                 model.getBalance(),
                 model.getCreditLimit(),
                 model.getInterestRate(),
-                model.getMinPaymentPercentage() // Entity stores as percentage (0-100), model getter returns percentage
+                model.getMinPaymentPercentage(),
+                model.getAccountName() // Entity stores as percentage (0-100), model getter returns percentage
             );
             return Optional.of(entity);
         } catch (IllegalArgumentException e) {

@@ -185,7 +185,7 @@ public class CheckingAccountService {
                 entity.getCustomerID(),
                 entity.getAccountID(),
                 entity.getBalance(),
-                "Checking Account",
+                entity.getAccountName(),
                 entity.getOverdraftFee(),
                 0.0 // overdraft limit not in entity yet
             );
@@ -202,7 +202,8 @@ public class CheckingAccountService {
                 model.getAccountID(),
                 model.getCustomerID(),
                 model.getBalance(),
-                model.getOverdraftFee()
+                model.getOverdraftFee(),
+                model.getAccountName()
             );
             return Optional.of(entity);
         } catch (IllegalArgumentException e) {

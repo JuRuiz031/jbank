@@ -15,6 +15,7 @@ public class CreditLineEntity {
     private double creditLimit;
     private double interestRate;
     private double minPaymentPercentage;
+    private String accountName;
 
     public CreditLineEntity() {
     }
@@ -26,6 +27,16 @@ public class CreditLineEntity {
         this.creditLimit = creditLimit;
         this.interestRate = interestRate;
         this.minPaymentPercentage = minPaymentPercentage;
+    }
+
+    public CreditLineEntity(int accountID, int customerID, double balance, double creditLimit, double interestRate, double minPaymentPercentage, String accountName) {
+        this.accountID = accountID;
+        this.customerID = customerID;
+        this.balance = balance;
+        this.creditLimit = creditLimit;
+        this.interestRate = interestRate;
+        this.minPaymentPercentage = minPaymentPercentage;
+        this.accountName = accountName;
     }
 
     // Getters
@@ -53,6 +64,10 @@ public class CreditLineEntity {
         return minPaymentPercentage;
     }
 
+    public String getAccountName() {
+        return accountName;
+    }
+
     // Setters
     public void setAccountID(int accountID) {
         this.accountID = accountID;
@@ -76,6 +91,10 @@ public class CreditLineEntity {
 
     public void setMinPaymentPercentage(double minPaymentPercentage) {
         this.minPaymentPercentage = minPaymentPercentage;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     // equals, hashCode, toString

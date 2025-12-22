@@ -31,7 +31,7 @@ public class SavingsAccountDAO implements DAOinterface<SavingsAccountEntity> {
             String accountSql = "INSERT INTO accounts (account_type, account_name, balance) VALUES (?, ?, ?)";
             try (PreparedStatement accountStmt = connection.prepareStatement(accountSql, Statement.RETURN_GENERATED_KEYS)) {
                 accountStmt.setString(1, "SAVINGS");
-                accountStmt.setString(2, "Savings Account");
+                accountStmt.setString(2, savingsAccountEntity.getAccountName());
                 accountStmt.setDouble(3, savingsAccountEntity.getBalance());
                 accountStmt.executeUpdate();
                 
@@ -66,7 +66,7 @@ public class SavingsAccountDAO implements DAOinterface<SavingsAccountEntity> {
     // Read by ID
     @Override
     public Optional<SavingsAccountEntity> getByID(Integer id) throws SQLException {
-        String sql = "SELECT a.account_id, a.balance, sa.interest_rate, sa.withdrawal_limit, sa.withdrawal_counter " +
+        String sql = "SELECT a.account_id, a.account_name, a.balance, sa.interest_rate, sa.withdrawal_limit, sa.withdrawal_counter " +
                      "FROM accounts a " +
                      "JOIN savings_accounts sa ON a.account_id = sa.account_id " +
                      "WHERE a.account_id = ?";
@@ -80,7 +80,8 @@ public class SavingsAccountDAO implements DAOinterface<SavingsAccountEntity> {
                         rs.getDouble("balance"),
                         rs.getDouble("interest_rate"),
                         rs.getInt("withdrawal_limit"),
-                        rs.getInt("withdrawal_counter")
+                        rs.getInt("withdrawal_counter"),
+                        rs.getString("account_name")
                     );
                     return Optional.of(account);
                 } else {
@@ -94,7 +95,7 @@ public class SavingsAccountDAO implements DAOinterface<SavingsAccountEntity> {
     @Override
     public List<SavingsAccountEntity> getAll() throws SQLException {
         List<SavingsAccountEntity> accounts = new ArrayList<>();
-        String sql = "SELECT a.account_id, a.balance, sa.interest_rate, sa.withdrawal_limit, sa.withdrawal_counter " +
+        String sql = "SELECT a.account_id, a.account_name, a.balance, sa.interest_rate, sa.withdrawal_limit, sa.withdrawal_counter " +
                      "FROM accounts a " +
                      "JOIN savings_accounts sa ON a.account_id = sa.account_id";
         
@@ -107,7 +108,8 @@ public class SavingsAccountDAO implements DAOinterface<SavingsAccountEntity> {
                     rs.getDouble("balance"),
                     rs.getDouble("interest_rate"),
                     rs.getInt("withdrawal_limit"),
-                    rs.getInt("withdrawal_counter")
+                    rs.getInt("withdrawal_counter"),
+                    rs.getString("account_name")
                 );
                 accounts.add(account);
             }

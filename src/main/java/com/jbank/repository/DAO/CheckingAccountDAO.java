@@ -31,7 +31,7 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
             String accountSql = "INSERT INTO accounts (account_type, account_name, balance) VALUES (?, ?, ?)";
             try (PreparedStatement accountStmt = connection.prepareStatement(accountSql, Statement.RETURN_GENERATED_KEYS)) {
                 accountStmt.setString(1, "CHECKING");
-                accountStmt.setString(2, "Checking Account"); // Placeholder - could be parameterized
+                accountStmt.setString(2, checkingAccountEntity.getAccountName());
                 accountStmt.setDouble(3, checkingAccountEntity.getBalance()); // Use the initial deposit from entity
                 accountStmt.executeUpdate();
                 
@@ -65,7 +65,7 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
     // Read by ID
     @Override
     public Optional<CheckingAccountEntity> getByID(Integer id) throws SQLException {
-        String sql = "SELECT a.account_id, a.balance, ca.overdraft_fee " +
+        String sql = "SELECT a.account_id, a.account_name, a.balance, ca.overdraft_fee " +
                      "FROM accounts a " +
                      "JOIN checking_accounts ca ON a.account_id = ca.account_id " +
                      "WHERE a.account_id = ?";
@@ -77,7 +77,8 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
                         rs.getInt("account_id"),
                         0, // customerID not stored here, retrieved from client_accounts
                         rs.getDouble("balance"),
-                        rs.getDouble("overdraft_fee")
+                        rs.getDouble("overdraft_fee"),
+                        rs.getString("account_name")
                     );
                     return Optional.of(account);
                 } else {
@@ -91,7 +92,7 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
     @Override
     public List<CheckingAccountEntity> getAll() throws SQLException {
         List<CheckingAccountEntity> accounts = new ArrayList<>();
-        String sql = "SELECT a.account_id, a.balance, ca.overdraft_fee " +
+        String sql = "SELECT a.account_id, a.account_name, a.balance, ca.overdraft_fee " +
                      "FROM accounts a " +
                      "JOIN checking_accounts ca ON a.account_id = ca.account_id";
         
@@ -102,7 +103,8 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
                     rs.getInt("account_id"),
                     0,
                     rs.getDouble("balance"),
-                    rs.getDouble("overdraft_fee")
+                    rs.getDouble("overdraft_fee"),
+                    rs.getString("account_name")
                 );
                 accounts.add(account);
             }

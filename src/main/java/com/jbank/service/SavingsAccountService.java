@@ -243,7 +243,7 @@ public class SavingsAccountService {
                 entity.getCustomerID(),
                 entity.getAccountID(),
                 entity.getBalance(),
-                "Savings Account",
+                entity.getAccountName(),
                 entity.getInterestRate(),
                 entity.getWithdrawalLimit()
             );
@@ -262,7 +262,8 @@ public class SavingsAccountService {
                 model.getBalance(),
                 model.getInterestRate(),
                 model.getWithdrawalLimit(),
-                model.getWithdrawalCounter()
+                model.getWithdrawalCounter(),
+                model.getAccountName()
             );
             return Optional.of(entity);
         } catch (IllegalArgumentException e) {
