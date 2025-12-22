@@ -192,6 +192,14 @@ public class AccountController {
     private void handleCheckingAccountOperations(CheckingAccount account) {
         boolean managing = true;
         while (managing) {
+            // Refresh account data from database before displaying menu
+            Optional<CheckingAccount> refreshed = checkingService.getById(account.getAccountID());
+            if (refreshed.isEmpty()) {
+                System.out.println("Error refreshing account data. Returning to menu.");
+                return;
+            }
+            account = refreshed.get();
+            
             printCheckingOperationsMenu(account);
             
             Optional<Integer> choiceOpt = InputHandler.getIntInput("Enter your choice: ");
@@ -344,6 +352,14 @@ public class AccountController {
     private void handleSavingsAccountOperations(SavingsAccount account) {
         boolean managing = true;
         while (managing) {
+            // Refresh account data from database before displaying menu
+            Optional<SavingsAccount> refreshed = savingsService.getById(account.getAccountID());
+            if (refreshed.isEmpty()) {
+                System.out.println("Error refreshing account data. Returning to menu.");
+                return;
+            }
+            account = refreshed.get();
+            
             printSavingsOperationsMenu(account);
             
             Optional<Integer> choiceOpt = InputHandler.getIntInput("Enter your choice: ");
@@ -515,6 +531,14 @@ public class AccountController {
     private void handleCreditLineOperations(CreditLine account) {
         boolean managing = true;
         while (managing) {
+            // Refresh account data from database before displaying menu
+            Optional<CreditLine> refreshed = creditLineService.getById(account.getAccountID());
+            if (refreshed.isEmpty()) {
+                System.out.println("Error refreshing account data. Returning to menu.");
+                return;
+            }
+            account = refreshed.get();
+            
             printCreditLineOperationsMenu(account);
             
             Optional<Integer> choiceOpt = InputHandler.getIntInput("Enter your choice: ");
@@ -618,7 +642,6 @@ public class AccountController {
                 if (refreshed.isPresent()) {
                     System.out.println("Successfully paid " + ValidationUtils.formatCurrency(amount));
                     System.out.println("New balance: " + ValidationUtils.formatCurrency(refreshed.get().getBalance()));
-                    System.out.println("Note: Interest may be applied to remaining balance.");
                 }
             } else {
                 System.out.println("Payment failed. Please try again.");
@@ -852,11 +875,16 @@ public class AccountController {
             }
             
             Optional<Double> amountOpt = ValidationUtils.parseCurrencyString(input);
-            if (amountOpt.isPresent() && amountOpt.get() >= 0) {
+            if (amountOpt.isEmpty()) {
+                System.out.println("Invalid format. Please enter a valid amount (e.g., 100.50).");
+                continue;
+            }
+            
+            if (amountOpt.get() >= 0) {
                 return amountOpt;
             }
             
-            System.out.println("Please enter a valid non-negative amount.");
+            System.out.println("Please enter a non-negative amount.");
         }
     }
 
@@ -869,7 +897,12 @@ public class AccountController {
             }
             
             Optional<Double> amountOpt = ValidationUtils.parseCurrencyString(input);
-            if (amountOpt.isPresent() && amountOpt.get() > 0) {
+            if (amountOpt.isEmpty()) {
+                System.out.println("Invalid format. Please enter a valid amount (e.g., 100.50).");
+                continue;
+            }
+            
+            if (amountOpt.get() > 0) {
                 return amountOpt;
             }
             
@@ -974,7 +1007,12 @@ public class AccountController {
             }
             
             Optional<Double> amountOpt = ValidationUtils.parseCurrencyString(input);
-            if (amountOpt.isPresent() && CreditLineValidator.isValidCreditLimit(amountOpt.get())) {
+            if (amountOpt.isEmpty()) {
+                System.out.println("Invalid format. Please enter a valid amount (e.g., 5000.00).");
+                continue;
+            }
+            
+            if (CreditLineValidator.isValidCreditLimit(amountOpt.get())) {
                 return amountOpt;
             }
             

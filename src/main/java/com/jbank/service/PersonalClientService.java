@@ -193,6 +193,7 @@ public class PersonalClientService implements ServiceInterface<PersonalClientEnt
         // Try to validate as a CheckingAccount
         CheckingAccountService checkingService = new CheckingAccountService();
         var checkingAccount = checkingService.getById(accountId)
+            // Use instanceof to ensure correct casting
             .filter(account -> account instanceof com.jbank.model.CheckingAccount)
             .map(account -> (com.jbank.model.CheckingAccount) account);
         

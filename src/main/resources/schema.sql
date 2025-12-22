@@ -53,7 +53,7 @@ CREATE TABLE checking_accounts (
 -- Savings account specific fields
 CREATE TABLE savings_accounts (
     account_id INT PRIMARY KEY,
-    interest_rate DECIMAL(5, 4) NOT NULL CHECK (interest_rate >= 0),
+    interest_rate DECIMAL(5, 2) NOT NULL CHECK (interest_rate >= 0),
     withdrawal_limit INT NOT NULL CHECK (withdrawal_limit >= 0),
     withdrawal_counter INT NOT NULL DEFAULT 0 CHECK (withdrawal_counter >= 0),
     FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE
@@ -63,12 +63,12 @@ CREATE TABLE savings_accounts (
 CREATE TABLE credit_lines (
     account_id INT PRIMARY KEY,
     credit_limit DECIMAL(12, 2) NOT NULL CHECK (credit_limit >= 0),
-    interest_rate DECIMAL(5, 4) NOT NULL CHECK (interest_rate >= 0),
+    interest_rate DECIMAL(5, 2) NOT NULL CHECK (interest_rate >= 0),
     min_payment_percentage DECIMAL(5, 2) NOT NULL CHECK (min_payment_percentage BETWEEN 0 AND 100),
     FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE
 );
 
--- Junction table for many-to-many relationship (could support joint accounts in future iterations)
+-- Junction table for many-to-many relationship between clients and accounts
 -- Note: ON DELETE RESTRICT for accounts ensures accounts are not deleted via CASCADE
 -- Accounts must be explicitly validated and deleted through the service layer
 CREATE TABLE client_accounts (

@@ -168,28 +168,23 @@ public class CreditLineService {
         }
     }
 
-    // Make a payment on the credit line, reduces balance and applies interest on remaining balance
+    // Make a payment on the credit line, reduces balance
     public boolean makePayment(CreditLine account, double paymentAmount) {
         try {
             account.makePayment(paymentAmount);
             
-            // Apply interest on remaining balance
-            double interest = account.getBalance() * (account.getInterestRate() / 100.0);
-            double newBalance = account.getBalance() + interest;
-            
-            // Update in database
+            // Update in database with new balance (no automatic interest on every payment)
             CreditLineEntity entity = new CreditLineEntity(
                 account.getAccountID(),
                 account.getCustomerID(),
-                newBalance,
+                account.getBalance(),
                 account.getCreditLimit(),
                 account.getInterestRate(),
                 account.getMinPaymentPercentage()
             );
             creditLineDAO.updateByID(entity);
             
-            LOGGER.info("Payment of {} and interest of {} applied to account {}", 
-                       paymentAmount, interest, account.getAccountID());
+            LOGGER.info("Payment of {} applied to account {}", paymentAmount, account.getAccountID());
             return true;
         } catch (IllegalArgumentException e) {
             LOGGER.warn("Invalid payment: {}", e.getMessage());
@@ -240,7 +235,7 @@ public class CreditLineService {
                 "Credit Line",
                 entity.getCreditLimit(),
                 entity.getInterestRate(),
-                entity.getMinPaymentPercentage() * 100 // Convert from decimal to percentage
+                entity.getMinPaymentPercentage() // Entity stores as percentage, model constructor expects percentage
             );
             return Optional.of(account);
         } catch (IllegalArgumentException e) {
@@ -257,7 +252,7 @@ public class CreditLineService {
                 model.getBalance(),
                 model.getCreditLimit(),
                 model.getInterestRate(),
-                model.getMinPaymentPercentage() / 100 // Convert from percentage to decimal
+                model.getMinPaymentPercentage() // Entity stores as percentage (0-100), model getter returns percentage
             );
             return Optional.of(entity);
         } catch (IllegalArgumentException e) {

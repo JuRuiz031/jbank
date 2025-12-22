@@ -225,6 +225,7 @@ public class BusinessClientService implements ServiceInterface<BusinessClientEnt
         // Try to validate as a CreditLine
         CreditLineService creditLineService = new CreditLineService();
         var creditLineAccount = creditLineService.getById(accountId)
+            // Use instanceof to ensure correct casting
             .filter(account -> account instanceof com.jbank.model.CreditLine)
             .map(account -> (com.jbank.model.CreditLine) account);
         

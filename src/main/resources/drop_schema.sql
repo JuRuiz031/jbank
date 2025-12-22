@@ -12,10 +12,10 @@ DROP TABLE IF EXISTS business_clients CASCADE;
 DROP TABLE IF EXISTS personal_clients CASCADE;
 DROP TABLE IF EXISTS clients CASCADE;
 
--- Drop indexes (if they weren't dropped with CASCADE)
-DROP INDEX IF EXISTS idx_clients_type;
-DROP INDEX IF EXISTS idx_personal_tax_id;
-DROP INDEX IF EXISTS idx_business_ein;
-DROP INDEX IF EXISTS idx_accounts_type;
-DROP INDEX IF EXISTS idx_client_accounts_customer;
-DROP INDEX IF EXISTS idx_client_accounts_account;
+-- -- Drop indexes (if they weren't dropped with CASCADE)
+-- DROP INDEX IF EXISTS idx_clients_type;
+-- DROP INDEX IF EXISTS idx_personal_tax_id;
+-- DROP INDEX IF EXISTS idx_business_ein;
+-- DROP INDEX IF EXISTS idx_accounts_type;
+-- DROP INDEX IF EXISTS idx_client_accounts_customer;
+-- DROP INDEX IF EXISTS idx_client_accounts_account;

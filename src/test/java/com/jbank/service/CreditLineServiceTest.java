@@ -49,6 +49,7 @@ public class CreditLineServiceTest {
     @BeforeEach
     public void setUp() {
         // Valid test credit line - use accountID 0 as placeholder before DB assignment
+        // Constructor receives 2.0 as percentage (2%), stored internally as 0.02 decimal
         validCreditLine = new CreditLine(
             testClientId,
             0,
@@ -59,13 +60,14 @@ public class CreditLineServiceTest {
             2.0
         );
 
+        // Entity stores percentage value (2.0) to match database schema which expects percentage (0-100)
         validEntity = new CreditLineEntity(
             testAccountId,
             testClientId,
             0.0,
             5000.00,
             15.0,
-            0.02
+            2.0
         );
     }
 
@@ -270,7 +272,7 @@ public class CreditLineServiceTest {
     @Test
     public void testMakePayment_ValidAmount_UpdatesBalance() throws Exception {
         CreditLine creditLine = new CreditLine(testClientId, testAccountId, 2000.0, "My Credit Line", 5000.00, 15.0, 2.0);
-        when(creditLineDAO.updateByID(any())).thenReturn(new CreditLineEntity(testAccountId, testClientId, 1003.0, 5000.00, 15.0, 0.02));
+        when(creditLineDAO.updateByID(any())).thenReturn(new CreditLineEntity(testAccountId, testClientId, 1000.0, 5000.00, 15.0, 2.0));
 
         boolean result = service.makePayment(creditLine, 1000.0);
 
@@ -322,7 +324,7 @@ public class CreditLineServiceTest {
         assertEquals(0.0, entity.getBalance());
         assertEquals(5000.00, entity.getCreditLimit());
         assertEquals(15.0, entity.getInterestRate());
-        assertEquals(0.02, entity.getMinPaymentPercentage());
+        assertEquals(2.0, entity.getMinPaymentPercentage()); // Entity stores percentage (2.0)
     }
 
     @Test
@@ -336,6 +338,6 @@ public class CreditLineServiceTest {
         assertEquals(0.0, creditLine.getBalance());
         assertEquals(5000.00, creditLine.getCreditLimit());
         assertEquals(15.0, creditLine.getInterestRate());
-        assertEquals(2.0, creditLine.getMinPaymentPercentage());
+        assertEquals(2.0, creditLine.getMinPaymentPercentage()); // Model getter returns percentage (2.0)
     }
 }
