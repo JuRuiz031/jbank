@@ -185,7 +185,7 @@ public class PersonalClientService implements ServiceInterface<PersonalClientEnt
     /**
      * Validates if an account can be deleted based on its balance.
      * For checking/savings: balance must be 0
-     * For credit lines: balance must be 0 (fully paid off)
+     * For credit lines: balance must be fully paid off (0)
      * 
      * @return null if valid, error message if invalid
      */
