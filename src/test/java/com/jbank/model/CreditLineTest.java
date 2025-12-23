@@ -68,6 +68,6 @@ public class CreditLineTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> 
             testAccount.makePayment(10000)
         );
-        assertEquals("Payment would exceed credit limit. Would you like to pay off the full balance?", exception.getMessage());
+        assertEquals("Payment would result in a credit balance exceeding the credit limit.", exception.getMessage());
     }
 }

@@ -52,8 +52,11 @@ public class CreditLine extends AbstractAccount {
             throw new IllegalArgumentException("Payment amount cannot be negative.");
         }
         double newBalance = this.getBalance() - paymentAmount;
+        // Balance cannot go below -creditLimit (more credit than limit allows)
+        // For credit lines: positive balance = owe money, negative = credit available
+        // Prevent paying in the wrong direction (balance becoming too negative)
         if (newBalance < -creditLimit) {
-            throw new IllegalArgumentException("Payment would exceed credit limit. Would you like to pay off the full balance?");
+            throw new IllegalArgumentException("Payment would result in a credit balance exceeding the credit limit.");
         }
         this.setBalance(newBalance);
     }

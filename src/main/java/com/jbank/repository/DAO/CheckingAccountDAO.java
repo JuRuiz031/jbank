@@ -50,7 +50,7 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
                 try (PreparedStatement checkingStmt = connection.prepareStatement(checkingSql)) {
                     checkingStmt.setInt(1, accountId);
                     checkingStmt.setDouble(2, checkingAccountEntity.getOverdraftFee());
-                    checkingStmt.setDouble(3, 0.0); // Overdraft limit not in entity yet
+                    checkingStmt.setDouble(3, checkingAccountEntity.getOverdraftLimit());
                     checkingStmt.executeUpdate();
                 }
                 
@@ -65,7 +65,7 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
     // Read by ID
     @Override
     public Optional<CheckingAccountEntity> getByID(Integer id) throws SQLException {
-        String sql = "SELECT a.account_id, a.account_name, a.balance, ca.overdraft_fee " +
+        String sql = "SELECT a.account_id, a.account_name, a.balance, ca.overdraft_fee, ca.overdraft_limit " +
                      "FROM accounts a " +
                      "JOIN checking_accounts ca ON a.account_id = ca.account_id " +
                      "WHERE a.account_id = ?";
@@ -78,6 +78,7 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
                         0, // customerID not stored here, retrieved from client_accounts
                         rs.getDouble("balance"),
                         rs.getDouble("overdraft_fee"),
+                        rs.getDouble("overdraft_limit"),
                         rs.getString("account_name")
                     );
                     return Optional.of(account);
@@ -92,7 +93,7 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
     @Override
     public List<CheckingAccountEntity> getAll() throws SQLException {
         List<CheckingAccountEntity> accounts = new ArrayList<>();
-        String sql = "SELECT a.account_id, a.account_name, a.balance, ca.overdraft_fee " +
+        String sql = "SELECT a.account_id, a.account_name, a.balance, ca.overdraft_fee, ca.overdraft_limit " +
                      "FROM accounts a " +
                      "JOIN checking_accounts ca ON a.account_id = ca.account_id";
         
@@ -104,6 +105,7 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
                     0,
                     rs.getDouble("balance"),
                     rs.getDouble("overdraft_fee"),
+                    rs.getDouble("overdraft_limit"),
                     rs.getString("account_name")
                 );
                 accounts.add(account);
@@ -122,10 +124,11 @@ public class CheckingAccountDAO implements DAOinterface<CheckingAccountEntity> {
             accountStmt.executeUpdate();
         }
         
-        String checkingSql = "UPDATE checking_accounts SET overdraft_fee = ? WHERE account_id = ?";
+        String checkingSql = "UPDATE checking_accounts SET overdraft_fee = ?, overdraft_limit = ? WHERE account_id = ?";
         try (PreparedStatement checkingStmt = connection.prepareStatement(checkingSql)) {
             checkingStmt.setDouble(1, checkingAccountEntity.getOverdraftFee());
-            checkingStmt.setInt(2, checkingAccountEntity.getAccountID());
+            checkingStmt.setDouble(2, checkingAccountEntity.getOverdraftLimit());
+            checkingStmt.setInt(3, checkingAccountEntity.getAccountID());
             checkingStmt.executeUpdate();
         }
         

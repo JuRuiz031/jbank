@@ -72,7 +72,8 @@ public class SavingsAccount extends AbstractAccount implements Depositable, With
     }
 
     public void applyInterest() {
-        double newBalance = this.getBalance() + (this.getBalance() * (interestRate / 100));
+        double interestEarned = this.getBalance() * (interestRate / 100.0);
+        double newBalance = this.getBalance() + interestEarned;
         this.setBalance(newBalance);
     }
 

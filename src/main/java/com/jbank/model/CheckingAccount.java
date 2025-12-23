@@ -41,13 +41,18 @@ public class CheckingAccount extends AbstractAccount implements Depositable, Wit
             throw new IllegalArgumentException("Withdrawal amount must be positive.");
         }
         double newBalance = this.getBalance() - withdrawAmount;
-        if (newBalance < 0) {
-            if(newBalance < -overdraftLimit) {
-                throw new IllegalArgumentException("Withdrawal would exceed overdraft limit.");
-            } else {
-                newBalance -= overdraftFee;
-            }
+        
+        // Check if withdrawal would exceed overdraft limit
+        // Account can go negative down to -overdraftLimit
+        if (newBalance < -overdraftLimit) {
+            throw new IllegalArgumentException("Withdrawal would exceed overdraft limit.");
         }
+        
+        // If balance goes negative, apply overdraft fee
+        if (newBalance < 0) {
+            newBalance -= overdraftFee;
+        }
+        
         this.setBalance(newBalance);
     }
 
@@ -59,9 +64,20 @@ public class CheckingAccount extends AbstractAccount implements Depositable, Wit
         this.overdraftFee = overdraftFee;
     }
 
+    public void setOverdraftLimit(double overdraftLimit) {
+        if(overdraftLimit < 0) {
+            throw new IllegalArgumentException("Overdraft limit cannot be negative.");
+        }
+        this.overdraftLimit = overdraftLimit;
+    }
+
     // Getter
     public double getOverdraftFee() {
         return overdraftFee;
+    }
+
+    public double getOverdraftLimit() {
+        return overdraftLimit;
     }
 
     @Override

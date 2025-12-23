@@ -15,12 +15,10 @@ public class AbstractAccount {
     // Constructor
     public AbstractAccount (int customerID, int accountID, double balance, String accountName) {
         // Input validation
-        if(balance < 0) {
-            throw new IllegalArgumentException("Initial balance cannot be negative.");
-        }
+        // Note: Balance can be negative for CheckingAccounts with overdraft protection
+        // Validation of balance limits happens at the service layer during operations
         if(accountName == null || accountName.isEmpty() || accountName.length() < 3 || accountName.length() > 30) {
             throw new IllegalArgumentException("Account name must be between 3 and 30 characters.");
-
         }
 
         this.customerID = customerID;

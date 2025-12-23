@@ -63,7 +63,9 @@ public class SavingsAccountServiceTest {
             testClientId,
             1000.00,
             3.0,
-            500
+            500,
+            0,
+            "My Savings"
         );
     }
 
@@ -148,7 +150,7 @@ public class SavingsAccountServiceTest {
 
     @Test
     public void testGetAll_ReturnsAllAccounts() throws Exception {
-        SavingsAccountEntity entity2 = new SavingsAccountEntity(101, 51, 5000.00, 4.0, 500);
+        SavingsAccountEntity entity2 = new SavingsAccountEntity(101, 51, 5000.00, 4.0, 500, 0, "Test Savings");
         when(savingsAccountDAO.getAll()).thenReturn(java.util.List.of(validEntity, entity2));
 
         java.util.List<SavingsAccount> result = service.getAll();
@@ -175,7 +177,9 @@ public class SavingsAccountServiceTest {
             testClientId,
             1500.00,
             4.0,
-            500
+            500,
+            0,
+            "My Savings"
         );
         when(savingsAccountDAO.updateByID(any())).thenReturn(updatedEntity);
 
@@ -232,7 +236,7 @@ public class SavingsAccountServiceTest {
     @Test
     public void testDeposit_ValidAmount_UpdatesBalance() throws Exception {
         SavingsAccount account = new SavingsAccount(testClientId, testAccountId, 1000.00, "My Savings", 3.0, 500);
-        when(savingsAccountDAO.updateByID(any())).thenReturn(new SavingsAccountEntity(testAccountId, testClientId, 1500.00, 3.0, 500));
+        when(savingsAccountDAO.updateByID(any())).thenReturn(new SavingsAccountEntity(testAccountId, testClientId, 1500.00, 3.0, 500, 0, "My Savings"));
 
         boolean result = service.deposit(account, 500.00);
 
@@ -255,7 +259,7 @@ public class SavingsAccountServiceTest {
     @Test
     public void testWithdraw_ValidAmount_UpdatesBalance() throws Exception {
         SavingsAccount account = new SavingsAccount(testClientId, testAccountId, 1000.00, "My Savings", 3.0, 500);
-        when(savingsAccountDAO.updateByID(any())).thenReturn(new SavingsAccountEntity(testAccountId, testClientId, 500.00, 3.0, 500));
+        when(savingsAccountDAO.updateByID(any())).thenReturn(new SavingsAccountEntity(testAccountId, testClientId, 500.00, 3.0, 500, 0, "My Savings"));
 
         boolean result = service.withdraw(account, 500.00);
 
@@ -281,7 +285,7 @@ public class SavingsAccountServiceTest {
     public void testApplyInterest_ValidRate_UpdatesBalance() throws Exception {
         SavingsAccount account = new SavingsAccount(testClientId, testAccountId, 1000.00, "My Savings", 3.0, 500);
         // 1000 * (3.0 / 100) = 30
-        when(savingsAccountDAO.updateByID(any())).thenReturn(new SavingsAccountEntity(testAccountId, testClientId, 1030.00, 3.0, 500));
+        when(savingsAccountDAO.updateByID(any())).thenReturn(new SavingsAccountEntity(testAccountId, testClientId, 1030.00, 3.0, 500, 0, "My Savings"));
 
         boolean result = service.applyInterest(account);
 

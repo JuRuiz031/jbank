@@ -142,7 +142,9 @@ public class CheckingAccountService {
                 account.getAccountID(),
                 account.getCustomerID(),
                 account.getBalance(),
-                account.getOverdraftFee()
+                account.getOverdraftFee(),
+                account.getOverdraftLimit(),
+                account.getAccountName()
             );
             checkingAccountDAO.updateByID(entity);
             return true;
@@ -160,12 +162,14 @@ public class CheckingAccountService {
         try {
             account.withdraw(withdrawAmount);
             
-            // Update in database
+            // Update in database - pass overdraft limit from model to entity
             CheckingAccountEntity entity = new CheckingAccountEntity(
                 account.getAccountID(),
                 account.getCustomerID(),
                 account.getBalance(),
-                account.getOverdraftFee()
+                account.getOverdraftFee(),
+                account.getOverdraftLimit(),
+                account.getAccountName()
             );
             checkingAccountDAO.updateByID(entity);
             return true;
@@ -187,7 +191,7 @@ public class CheckingAccountService {
                 entity.getBalance(),
                 entity.getAccountName(),
                 entity.getOverdraftFee(),
-                0.0 // overdraft limit not in entity yet
+                entity.getOverdraftLimit()
             );
             return Optional.of(account);
         } catch (IllegalArgumentException e) {
@@ -203,6 +207,7 @@ public class CheckingAccountService {
                 model.getCustomerID(),
                 model.getBalance(),
                 model.getOverdraftFee(),
+                model.getOverdraftLimit(),
                 model.getAccountName()
             );
             return Optional.of(entity);

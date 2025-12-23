@@ -13,6 +13,7 @@ public class CheckingAccountEntity {
     private int customerID;
     private double balance;
     private double overdraftFee;
+    private double overdraftLimit;
     private String accountName;
 
     public CheckingAccountEntity() {
@@ -33,6 +34,15 @@ public class CheckingAccountEntity {
         this.accountName = accountName;
     }
 
+    public CheckingAccountEntity(int accountID, int customerID, double balance, double overdraftFee, double overdraftLimit, String accountName) {
+        this.accountID = accountID;
+        this.customerID = customerID;
+        this.balance = balance;
+        this.overdraftFee = overdraftFee;
+        this.overdraftLimit = overdraftLimit;
+        this.accountName = accountName;
+    }
+
     // Getters
     public int getAccountID() {
         return accountID;
@@ -48,6 +58,10 @@ public class CheckingAccountEntity {
 
     public double getOverdraftFee() {
         return overdraftFee;
+    }
+
+    public double getOverdraftLimit() {
+        return overdraftLimit;
     }
 
     public String getAccountName() {
@@ -69,6 +83,10 @@ public class CheckingAccountEntity {
 
     public void setOverdraftFee(double overdraftFee) {
         this.overdraftFee = overdraftFee;
+    }
+
+    public void setOverdraftLimit(double overdraftLimit) {
+        this.overdraftLimit = overdraftLimit;
     }
 
     public void setAccountName(String accountName) {

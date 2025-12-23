@@ -62,7 +62,9 @@ public class CheckingAccountServiceTest {
             testAccountId,
             testClientId,
             500.00,
-            25.00
+            25.00,
+            500.00,
+            "My Checking"
         );
     }
 
@@ -146,7 +148,7 @@ public class CheckingAccountServiceTest {
 
     @Test
     public void testGetAll_ReturnsAllAccounts() throws Exception {
-        CheckingAccountEntity entity2 = new CheckingAccountEntity(101, 51, 1000.00, 30.00);
+        CheckingAccountEntity entity2 = new CheckingAccountEntity(101, 51, 1000.00, 30.00, 500.00, "Test Checking");
         when(checkingAccountDAO.getAll()).thenReturn(java.util.List.of(validEntity, entity2));
 
         java.util.List<CheckingAccount> result = service.getAll();
@@ -172,7 +174,9 @@ public class CheckingAccountServiceTest {
             testAccountId,
             testClientId,
             750.00,
-            30.00
+            30.00,
+            500.00,
+            "My Checking"
         );
         when(checkingAccountDAO.updateByID(any())).thenReturn(updatedEntity);
 
@@ -229,7 +233,7 @@ public class CheckingAccountServiceTest {
     @Test
     public void testDeposit_ValidAmount_UpdatesBalance() throws Exception {
         CheckingAccount account = new CheckingAccount(testClientId, testAccountId, 500.00, "My Checking", 25.00, 500.00);
-        when(checkingAccountDAO.updateByID(any())).thenReturn(new CheckingAccountEntity(testAccountId, testClientId, 600.00, 25.00));
+        when(checkingAccountDAO.updateByID(any())).thenReturn(new CheckingAccountEntity(testAccountId, testClientId, 600.00, 25.00, 500.00, "My Checking"));
 
         boolean result = service.deposit(account, 100.00);
 
@@ -252,7 +256,7 @@ public class CheckingAccountServiceTest {
     @Test
     public void testWithdraw_ValidAmount_UpdatesBalance() throws Exception {
         CheckingAccount account = new CheckingAccount(testClientId, testAccountId, 500.00, "My Checking", 25.00, 500.00);
-        when(checkingAccountDAO.updateByID(any())).thenReturn(new CheckingAccountEntity(testAccountId, testClientId, 400.00, 25.00));
+        when(checkingAccountDAO.updateByID(any())).thenReturn(new CheckingAccountEntity(testAccountId, testClientId, 400.00, 25.00, 500.00, "My Checking"));
 
         boolean result = service.withdraw(account, 100.00);
 
@@ -265,7 +269,7 @@ public class CheckingAccountServiceTest {
     public void testWithdraw_WithOverdraft_AppliesFeeAndUpdates() throws Exception {
         CheckingAccount account = new CheckingAccount(testClientId, testAccountId, 100.00, "My Checking", 25.00, 500.00);
         // Withdraw 200: 100 - 200 = -100, then apply fee: -100 - 25 = -125
-        when(checkingAccountDAO.updateByID(any())).thenReturn(new CheckingAccountEntity(testAccountId, testClientId, -125.00, 25.00));
+        when(checkingAccountDAO.updateByID(any())).thenReturn(new CheckingAccountEntity(testAccountId, testClientId, -125.00, 25.00, 500.00, "My Checking"));
 
         boolean result = service.withdraw(account, 200.00);
 

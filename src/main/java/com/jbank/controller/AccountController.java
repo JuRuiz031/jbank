@@ -227,6 +227,7 @@ public class AccountController {
         System.out.println("Account Name: " + account.getAccountName());
         System.out.println("Current Balance: " + ValidationUtils.formatCurrency(account.getBalance()));
         System.out.println("Overdraft Fee: " + ValidationUtils.formatCurrency(account.getOverdraftFee()));
+        System.out.println("Overdraft Limit: " + ValidationUtils.formatCurrency(account.getOverdraftLimit()));
         System.out.println();
     }
 

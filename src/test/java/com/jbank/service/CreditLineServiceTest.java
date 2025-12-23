@@ -67,7 +67,8 @@ public class CreditLineServiceTest {
             0.0,
             5000.00,
             15.0,
-            2.0
+            2.0,
+            "My Credit Line"
         );
     }
 
@@ -154,7 +155,7 @@ public class CreditLineServiceTest {
 
     @Test
     public void testGetAll_ReturnsAllAccounts() throws Exception {
-        CreditLineEntity entity2 = new CreditLineEntity(101, 51, 1500.0, 10000.00, 18.0, 0.025);
+        CreditLineEntity entity2 = new CreditLineEntity(101, 51, 1500.0, 10000.00, 18.0, 0.025, "Other Credit Line");
         when(creditLineDAO.getAll()).thenReturn(java.util.List.of(validEntity, entity2));
 
         java.util.List<CreditLine> result = service.getAll();
@@ -183,7 +184,8 @@ public class CreditLineServiceTest {
             2000.0,
             5000.00,
             15.0,
-            0.02
+            0.02,
+            "My Credit Line"
         );
         when(creditLineDAO.updateByID(any())).thenReturn(updatedEntity);
 
@@ -241,7 +243,7 @@ public class CreditLineServiceTest {
     @Test
     public void testChargeCredit_ValidAmount_UpdatesBalance() throws Exception {
         CreditLine creditLine = new CreditLine(testClientId, testAccountId, 0.0, "My Credit Line", 5000.00, 15.0, 2.0);
-        when(creditLineDAO.updateByID(any())).thenReturn(new CreditLineEntity(testAccountId, testClientId, 1000.0, 5000.00, 15.0, 0.02));
+        when(creditLineDAO.updateByID(any())).thenReturn(new CreditLineEntity(testAccountId, testClientId, 1000.0, 5000.00, 15.0, 0.02, "My Credit Line"));
 
         boolean result = service.chargeCredit(creditLine, 1000.0);
 
@@ -272,7 +274,7 @@ public class CreditLineServiceTest {
     @Test
     public void testMakePayment_ValidAmount_UpdatesBalance() throws Exception {
         CreditLine creditLine = new CreditLine(testClientId, testAccountId, 2000.0, "My Credit Line", 5000.00, 15.0, 2.0);
-        when(creditLineDAO.updateByID(any())).thenReturn(new CreditLineEntity(testAccountId, testClientId, 1000.0, 5000.00, 15.0, 2.0));
+        when(creditLineDAO.updateByID(any())).thenReturn(new CreditLineEntity(testAccountId, testClientId, 1000.0, 5000.00, 15.0, 2.0, "My Credit Line"));
 
         boolean result = service.makePayment(creditLine, 1000.0);
 
@@ -303,7 +305,7 @@ public class CreditLineServiceTest {
     @Test
     public void testIncreaseCreditLimit_IncreasesByTenPercent() throws Exception {
         CreditLine creditLine = new CreditLine(testClientId, testAccountId, 1000.0, "My Credit Line", 5000.00, 15.0, 2.0);
-        when(creditLineDAO.updateByID(any())).thenReturn(new CreditLineEntity(testAccountId, testClientId, 1000.0, 5500.00, 15.0, 0.02));
+        when(creditLineDAO.updateByID(any())).thenReturn(new CreditLineEntity(testAccountId, testClientId, 1000.0, 5500.00, 15.0, 0.02, "My Credit Line"));
 
         boolean result = service.increaseCreditLimit(creditLine);
 
